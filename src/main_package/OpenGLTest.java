@@ -18,6 +18,8 @@ import edu.stanford.math.plex4.math.metric.interfaces.SearchableFiniteMetricSpac
 import edu.stanford.math.plex4.math.metric.landmark.LandmarkSelector;
 import edu.stanford.math.plex4.math.metric.landmark.MaxMinLandmarkSelector;
 import edu.stanford.math.plex4.math.metric.landmark.RandomLandmarkSelector;
+import edu.stanford.math.plex_viewer.ObjectRenderer;
+import edu.stanford.math.plex_viewer.OpenGLManager;
 
 public class OpenGLTest {
 	public static void main(String[] args) throws OptimizationException, FunctionEvaluationException, IllegalArgumentException {

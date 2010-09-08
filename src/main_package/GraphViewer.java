@@ -6,6 +6,7 @@ import javax.media.opengl.GL;
 
 import edu.stanford.math.plex4.graph.AbstractUndirectedGraph;
 import edu.stanford.math.plex4.math.metric.impl.EuclideanMetricSpace;
+import edu.stanford.math.plex_viewer.ObjectRenderer;
 import gnu.trove.iterator.TIntIterator;
 import gnu.trove.set.TIntSet;
 
@@ -44,7 +45,6 @@ public class GraphViewer implements ObjectRenderer {
 
 	public void processSpecializedKeys(KeyEvent e) {}
 
-	@Override
 	public void init(GL gl) {
 		// TODO Auto-generated method stub
 	}

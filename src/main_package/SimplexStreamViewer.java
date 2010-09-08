@@ -13,7 +13,9 @@ import edu.stanford.math.plex4.homology.streams.impl.GeometricSimplexStream;
 import edu.stanford.math.plex4.homology.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.math.metric.interfaces.FiniteMetricSpace;
 import edu.stanford.math.plex4.utility.ExceptionUtility;
-import edu.stanford.math.plex4.utility.Infinity;
+import edu.stanford.math.plex_viewer.ColorScheme;
+import edu.stanford.math.plex_viewer.ObjectRenderer;
+import edu.stanford.math.plex_viewer.RectangularColorScheme;
 
 /**
  * @author Andrew Tausz
@@ -24,35 +26,26 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	
 	protected double maxFiltrationValue = 0;
 	protected final double delta;
-	protected final double diameter;
 	protected final int dimension;
 	protected final int numPoints;
 	
 	protected final float pointSize = 10.0f;
-	
-	protected final double[] maxima;
-	protected final double[] minima;
-	protected final double[] empericalMeans;
+	protected double[] empericalMeans;
 	protected double[] meanShift;
-	
-	protected GenericFunction<Simplex, double[]> colorFunction;
+	protected final ColorScheme colorScheme;
 	
 	public SimplexStreamViewer(AbstractFilteredStream<Simplex> stream, FiniteMetricSpace<double[]> metricSpace) {
 		this.stream = new GeometricSimplexStream(stream, metricSpace);
 		this.dimension = metricSpace.getPoint(0).length;
 		this.numPoints = metricSpace.size();
-		this.maxima = this.computeMaxima(metricSpace);
-		this.minima = this.computeMinima(metricSpace);
-		this.empericalMeans = this.computeMeans(metricSpace);
-		this.diameter = this.computeMaxDiameter();
-		this.delta = this.diameter / 100;
+		//this.empericalMeans = this.computeMeans(metricSpace);
+		this.delta = 1;
 		this.meanShift = new double[this.dimension];
-		this.colorFunction = this.getDefaultColorFunction();
+		this.colorScheme = new RectangularColorScheme();
 	}
 	
 	public void setColorFunction(GenericFunction<Simplex, double[]> colorFunction) {
 		ExceptionUtility.verifyNonNull(colorFunction);
-		this.colorFunction = colorFunction;
 	}
 	
 	public void renderShape(GL gl) {
@@ -78,7 +71,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		gl.glBegin(glShapeCode);
 		for (int vertexIndex = 0; vertexIndex < vertices.length; vertexIndex++) {
 			double[] point = this.stream.getPoint(vertices[vertexIndex]);
-			gl.glColor3dv(this.colorFunction.evaluate(simplex), 0);
+			gl.glColor3dv(this.computeSimplexColor(simplex), 0);
 			double[] shiftedPoint = this.meanCenterPoint(point);
 			if (point.length == 2) {
 				gl.glVertex2d(shiftedPoint[0], shiftedPoint[1]);
@@ -89,116 +82,31 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		gl.glEnd();
 	}
 	
-	/*
-	private void colorVertex(GL gl, double[] point) {
-		double[] normalizedPoint = this.normalizePoint(point);
-		if (point.length == 2) {
-			gl.glColor3d(normalizedPoint[0], normalizedPoint[1], 0);
-		} else if (point.length == 3) {
-			gl.glColor3d(normalizedPoint[0], normalizedPoint[1], normalizedPoint[2]);
-		}
-	}
-	*/
-	
-	private double[] defaultColorFunction(int[] vertices) {
+	/**
+	 * This function computes the color of a simplex by calculating the average
+	 * color of its vertices.
+	 * 
+	 * @param simplex the simplex to compute the color of
+	 * @return the color of the simplex
+	 */
+	private double[] computeSimplexColor(Simplex simplex) {
 		double[] color = new double[3];
+		int[] vertices = simplex.getVertices();
 		
 		for (int vertexIndex = 0; vertexIndex < vertices.length; vertexIndex++) {
-			double[] normalizedPoint = this.normalizePoint(this.stream.getPoint(vertices[vertexIndex]));
-			//double[] normalizedPoint = this.getSphericalColor(this.stream.getPoint(vertices[vertexIndex]));
-			for (int pointIndex = 0; pointIndex < normalizedPoint.length; pointIndex++) {
-				color[2 - pointIndex] += normalizedPoint[pointIndex] + 0.2;
-			}
+			double[] vertexColor = this.colorScheme.computeColor(this.stream.getPoint(vertices[vertexIndex]));
+			DoubleArrayMath.accumulate(color, vertexColor);
 		}
 		
-		for (int pointIndex = 0; pointIndex < color.length; pointIndex++) {
-			color[pointIndex] /= vertices.length;
-		}
-		
+		DoubleArrayMath.inPlaceMultiply(color, 1.0 / 3.0);
 		return color;
-	}
-	
-	private double[] defaultColorFunction(Simplex simplex) {
-		return this.defaultColorFunction(simplex.getVertices());
-	}
-	
-	public GenericFunction<Simplex, double[]> getDefaultColorFunction() {
-		return new GenericFunction<Simplex, double[]>() {
 
-			@Override
-			public double[] evaluate(Simplex argument) {
-				return defaultColorFunction(argument);
-			}
-			
-		};
 	}
 	
-	public double[] getSphericalColor(Simplex simplex) {
-		return this.sphericalColorFunction(simplex.getVertices());
-	}
-	
-	private double[] sphericalColorFunction(int[] vertices) {
-		double[] color = new double[3];
-		
-		for (int vertexIndex = 0; vertexIndex < vertices.length; vertexIndex++) {
-			double[] normalizedPoint = (this.stream.getPoint(vertices[vertexIndex]));
-			double[] sphericalColor = this.toSphericalCoordinates(normalizedPoint);
-			
-			//double[] normalizedPoint = this.getSphericalColor(this.stream.getPoint(vertices[vertexIndex]));
-			for (int pointIndex = 0; pointIndex < normalizedPoint.length; pointIndex++) {
-				color[pointIndex] += sphericalColor[pointIndex] + 0.2;
-			}
-		}
-		
-		for (int pointIndex = 0; pointIndex < color.length; pointIndex++) {
-			color[pointIndex] /= vertices.length;
-		}
-		
-		return color;
-	}
-	
-	public double[] getSphericalColor(double[] point) {
-		double[] sphericalCoordinates = this.toSphericalCoordinates(point);
-		sphericalCoordinates[2] = (sphericalCoordinates[2] + Math.PI) / (2 * Math.PI);
-		sphericalCoordinates[1] = (sphericalCoordinates[1]) / (2 * Math.PI);
-		return sphericalCoordinates;
-	}
-	
-	private double[] toSphericalCoordinates(double[] point) {
-		double[] sphericalCoordinates = new double[3];
-		double[] p = new double[3];
-		for (int i = 0; i < point.length; i++) {
-			p[i] = point[i];
-		}
-		sphericalCoordinates[0] = Math.sqrt(p[0] * p[0] + p[1] * p[1] + p[2] * p[2]);
-		sphericalCoordinates[1] = Math.acos(p[2] / sphericalCoordinates[0]);
-		sphericalCoordinates[2] = Math.atan2(p[1], p[0]);
-		return sphericalCoordinates;
-	}
-	
-	public double[] trigColorFunction(Simplex simplex) {
-		return this.trigColorFunction(simplex.getVertices());
-	}
-	
-	private double[] trigColorFunction(int[] vertices) {
-		double[] color = new double[3];
-		
-		for (int vertexIndex = 0; vertexIndex < vertices.length; vertexIndex++) {
-			double[] normalizedPoint = this.normalizePoint(this.stream.getPoint(vertices[vertexIndex]));
-			//double[] normalizedPoint = this.getSphericalColor(this.stream.getPoint(vertices[vertexIndex]));
-			for (int pointIndex = 0; pointIndex < normalizedPoint.length; pointIndex++) {
-				color[pointIndex] += Math.cos(normalizedPoint[pointIndex] * 2);
-			}
-		}
-		
-		for (int pointIndex = 0; pointIndex < color.length; pointIndex++) {
-			color[pointIndex] /= vertices.length;
-		}
-		
-		return color;
-	}
-	
-	@Override
+	/**
+	 * This function processes the keystrokes for stepping through the
+	 * filtration.
+	 */
 	public void processSpecializedKeys(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
 			this.maxFiltrationValue += delta;
@@ -212,15 +120,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		ExceptionUtility.verifyEqual(this.dimension, shift.length);
 		this.meanShift = shift;
 	}
-	
-	private double[] normalizePoint(double[] point) {
-		double[] result = new double[point.length];
-		for (int i = 0; i < point.length; i++) {
-			result[i] = (point[i] - this.minima[i]) / (this.maxima[i] - this.minima[i]);
-		}
-		return result;
-	}
-	
+		
 	private double[] meanCenterPoint(double[] point) {
 		double[] result = new double[point.length];
 		for (int i = 0; i < point.length; i++) {
@@ -228,56 +128,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		}
 		return result;
 	}
-	
-	private double computeMaxDiameter() {
-		double diameter = 0;
-		for (int i = 0; i < this.maxima.length; i++) {
-			diameter = Math.max(diameter, this.maxima[i] - this.minima[i]);
-		}
-		return diameter;
-	}
 
-	private double[] computeMaxima(FiniteMetricSpace<double[]> metricSpace) {
-		double[] maxima = new double[dimension];
-		for (int j = 0; j < dimension; j++) {
-			maxima[j] = Infinity.Double.getNegativeInfinity();
-		}
-		for (int i = 0; i < numPoints; i++) {
-			for (int j = 0; j < dimension; j++) {
-				maxima[j] = Math.max(maxima[j], metricSpace.getPoint(i)[j]);
-			}
-		}
-		return maxima;
-	}
-	
-	private double[] computeMinima(FiniteMetricSpace<double[]> metricSpace) {
-		double[] minima = new double[dimension];
-		for (int j = 0; j < dimension; j++) {
-			minima[j] = Infinity.Double.getPositiveInfinity();
-		}
-		for (int i = 0; i < numPoints; i++) {
-			for (int j = 0; j < dimension; j++) {
-				minima[j] = Math.min(minima[j], metricSpace.getPoint(i)[j]);
-			}
-		}
-		return minima;
-	}
-	
-	private double[] computeMeans(FiniteMetricSpace<double[]> metricSpace) {
-		double[] means = new double[dimension];
-		for (int i = 0; i < numPoints; i++) {
-			for (int j = 0; j < dimension; j++) {
-				means[j] += metricSpace.getPoint(i)[j];
-			}
-		}
-		
-		for (int j = 0; j < dimension; j++) {
-			means[j] /= numPoints;
-		}
-		return means;
-	}
-
-	@Override
 	public void init(GL gl) {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 	    gl.glEnable(GL.GL_POINT_SMOOTH);

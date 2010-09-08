@@ -26,6 +26,7 @@ import edu.stanford.math.plex4.homology.mapping.MappingUtility;
 import edu.stanford.math.plex4.homology.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.io2.FileIOUtility;
 import edu.stanford.math.plex4.math.metric.interfaces.FiniteMetricSpace;
+import edu.stanford.math.plex_viewer.ObjectRenderer;
 import gnu.trove.iterator.TObjectDoubleIterator;
 
 public class MappingViewer<F extends Number> implements ObjectRenderer {
@@ -116,19 +117,16 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 		return result;
 	}
 	
-	@Override
 	public void processSpecializedKeys(KeyEvent e) {
 		this.domainViewer.processSpecializedKeys(e);
 		this.codomainViewer.processSpecializedKeys(e);
 	}
 
-	@Override
 	public void renderShape(GL gl) {
 		this.domainViewer.renderShape(gl);
 		this.codomainViewer.renderShape(gl);
 	}
 
-	@Override
 	public void init(GL gl) {
 		this.domainViewer.init(gl);
 		this.codomainViewer.init(gl);

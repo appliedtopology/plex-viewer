@@ -1,4 +1,4 @@
-package main_package;
+package edu.stanford.math.plex_viewer;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -14,9 +14,10 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
+
 import com.sun.opengl.util.Animator;
 
-public class OpenGLManager implements GLEventListener, KeyListener, MouseListener,  MouseMotionListener {
+public class OpenGLManager implements GLEventListener, KeyListener, MouseListener, MouseMotionListener {
 	private float x_angle = 0.0f;
 	private float y_angle = 0.0f;
 	private float z_angle = 0.0f;
@@ -28,7 +29,7 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 
 	private final GLU glu = new GLU();
 	private final GLCanvas canvas = new GLCanvas();
-	private final Frame frame = new Frame("Jogl 3D Shape/Rotation");
+	private final Frame frame = new Frame("Plex Viewer");
 	private final Animator animator = new Animator(canvas);
 
 	public OpenGLManager(ObjectRenderer renderer) {
@@ -94,7 +95,7 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 	public void initialize() {
 		canvas.addGLEventListener(this);
 		frame.add(canvas);
-		frame.setSize(640, 480);
+		frame.setSize(1280, 1024);
 		frame.setUndecorated(true);
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.addWindowListener(new WindowAdapter() {
@@ -138,42 +139,35 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 
 	public void keyTyped(KeyEvent e) {}
 
-	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		this.x_angle = arg0.getPoint().x;
 		this.y_angle = arg0.getPoint().y;
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void mousePressed(MouseEvent arg0) {
 		this.x_angle = arg0.getPoint().x;
 		this.y_angle = arg0.getPoint().y;
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent arg0) {
 
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent arg0) {
 		this.x_angle = arg0.getPoint().x;
 		this.y_angle = arg0.getPoint().y;
