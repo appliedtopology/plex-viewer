@@ -4,13 +4,10 @@ import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.fraction.Fraction;
 import org.apache.commons.math.optimization.OptimizationException;
 
-import edu.stanford.math.plex4.algebraic_structures.impl.ModularIntField;
 import edu.stanford.math.plex4.algebraic_structures.impl.RationalField;
-import edu.stanford.math.plex4.deprecated_tests.PersistentHomologyTest;
 import edu.stanford.math.plex4.examples.PointCloudExamples;
 import edu.stanford.math.plex4.examples.SimplexStreamExamples;
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
-import edu.stanford.math.plex4.homology.chain_basis.SimplexComparator;
 import edu.stanford.math.plex4.homology.streams.impl.LazyWitnessStream;
 import edu.stanford.math.plex4.homology.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.math.metric.impl.EuclideanMetricSpace;
@@ -20,6 +17,7 @@ import edu.stanford.math.plex4.math.metric.landmark.MaxMinLandmarkSelector;
 import edu.stanford.math.plex4.math.metric.landmark.RandomLandmarkSelector;
 import edu.stanford.math.plex_viewer.ObjectRenderer;
 import edu.stanford.math.plex_viewer.OpenGLManager;
+import edu.stanford.math.plex_viewer.SimplexStreamViewer;
 
 public class OpenGLTest {
 	public static void main(String[] args) throws OptimizationException, FunctionEvaluationException, IllegalArgumentException {
@@ -40,7 +38,7 @@ public class OpenGLTest {
 		
 		openGLManager.initialize();
 		
-		PersistentHomologyTest.testClassicalPersistentHomology(stream, SimplexComparator.getInstance(), ModularIntField.getInstance(2), 3);
+		//PersistentHomologyTest.testClassicalPersistentHomology(stream, SimplexComparator.getInstance(), ModularIntField.getInstance(2), 3);
 	}
 	
 	public static void testCircleMapping() throws OptimizationException, FunctionEvaluationException, IllegalArgumentException {

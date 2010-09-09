@@ -9,7 +9,6 @@ import javax.media.opengl.GL;
 import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.optimization.OptimizationException;
 
-import edu.stanford.math.plex4.algebraic_structures.impl.DoubleArrayModule;
 import edu.stanford.math.plex4.algebraic_structures.interfaces.GenericOrderedField;
 import edu.stanford.math.plex4.array_utility.ArrayConversion;
 import edu.stanford.math.plex4.datastructures.DoubleFormalSum;
@@ -27,6 +26,7 @@ import edu.stanford.math.plex4.homology.streams.interfaces.AbstractFilteredStrea
 import edu.stanford.math.plex4.io2.FileIOUtility;
 import edu.stanford.math.plex4.math.metric.interfaces.FiniteMetricSpace;
 import edu.stanford.math.plex_viewer.ObjectRenderer;
+import edu.stanford.math.plex_viewer.SimplexStreamViewer;
 import gnu.trove.iterator.TObjectDoubleIterator;
 
 public class MappingViewer<F extends Number> implements ObjectRenderer {
@@ -62,11 +62,11 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 		DoubleFormalSum<GenericPair<Simplex, Simplex>> optimalChainMap = this.computeFunction();
 		
 		//this.codomainViewer.setColorFunction(this.pushforwardColorFunction(MappingUtility.toFunctionObject(optimalChainMap), this.domainViewer.getDefaultColorFunction(), this.domainStream));
-		this.codomainViewer.setColorFunction(MappingUtility.pushforward(MappingUtility.toFunctionObject(abs(optimalChainMap)), this.domainViewer.getDefaultColorFunction(), this.domainStream, new DoubleArrayModule(3)));
+		//this.codomainViewer.setColorFunction(MappingUtility.pushforward(MappingUtility.toFunctionObject(abs(optimalChainMap)), this.domainViewer.getDefaultColorFunction(), this.domainStream, new DoubleArrayModule(3)));
 	}
 	
 	private DoubleFormalSum<GenericPair<Simplex, Simplex>> computeFunction() {
-		ModuleMorphismRepresentation<Simplex, Simplex> rep = new ModuleMorphismRepresentation<Simplex, Simplex>(this.domainStream, this.codomainStream);
+		ModuleMorphismRepresentation<F, Simplex, Simplex> rep = new ModuleMorphismRepresentation<F, Simplex, Simplex>(this.domainStream, this.codomainStream);
 		List<double[]> list = null;
 		try {
 			list = FileIOUtility.readNumericCSVFile("D:\\Documents\\Code\\javaplex\\data\\runs\\10-08-11\\weighted_min.txt", ",");

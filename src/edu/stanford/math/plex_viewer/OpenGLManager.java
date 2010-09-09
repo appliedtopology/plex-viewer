@@ -14,7 +14,6 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-
 import com.sun.opengl.util.Animator;
 
 public class OpenGLManager implements GLEventListener, KeyListener, MouseListener, MouseMotionListener {

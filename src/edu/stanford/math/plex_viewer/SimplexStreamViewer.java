@@ -1,21 +1,20 @@
 /**
  * 
  */
-package main_package;
+package edu.stanford.math.plex_viewer;
 
 import java.awt.event.KeyEvent;
 
 import javax.media.opengl.GL;
 
+import edu.stanford.math.plex4.array_utility.DoubleArrayMath;
 import edu.stanford.math.plex4.functional.GenericFunction;
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
 import edu.stanford.math.plex4.homology.streams.impl.GeometricSimplexStream;
 import edu.stanford.math.plex4.homology.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.math.metric.interfaces.FiniteMetricSpace;
+import edu.stanford.math.plex4.math.metric.utility.MetricUtility;
 import edu.stanford.math.plex4.utility.ExceptionUtility;
-import edu.stanford.math.plex_viewer.ColorScheme;
-import edu.stanford.math.plex_viewer.ObjectRenderer;
-import edu.stanford.math.plex_viewer.RectangularColorScheme;
 
 /**
  * @author Andrew Tausz
@@ -29,7 +28,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	protected final int dimension;
 	protected final int numPoints;
 	
-	protected final float pointSize = 10.0f;
+	protected final float pointSize = 5.0f;
 	protected double[] empericalMeans;
 	protected double[] meanShift;
 	protected final ColorScheme colorScheme;
@@ -38,10 +37,10 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		this.stream = new GeometricSimplexStream(stream, metricSpace);
 		this.dimension = metricSpace.getPoint(0).length;
 		this.numPoints = metricSpace.size();
-		//this.empericalMeans = this.computeMeans(metricSpace);
-		this.delta = 1;
+		this.empericalMeans = MetricUtility.computeMeans(metricSpace);
+		this.delta = 0.1;
 		this.meanShift = new double[this.dimension];
-		this.colorScheme = new RectangularColorScheme();
+		this.colorScheme = new EqualIntensityColorScheme();
 	}
 	
 	public void setColorFunction(GenericFunction<Simplex, double[]> colorFunction) {
@@ -98,7 +97,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 			DoubleArrayMath.accumulate(color, vertexColor);
 		}
 		
-		DoubleArrayMath.inPlaceMultiply(color, 1.0 / 3.0);
+		DoubleArrayMath.inPlaceMultiply(color, 1.0 / vertices.length);
 		return color;
 
 	}
@@ -120,7 +119,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		ExceptionUtility.verifyEqual(this.dimension, shift.length);
 		this.meanShift = shift;
 	}
-		
+	
 	private double[] meanCenterPoint(double[] point) {
 		double[] result = new double[point.length];
 		for (int i = 0; i < point.length; i++) {
