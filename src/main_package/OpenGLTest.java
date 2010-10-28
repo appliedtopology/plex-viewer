@@ -4,24 +4,26 @@ import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.fraction.Fraction;
 import org.apache.commons.math.optimization.OptimizationException;
 
+import edu.stanford.math.plex4.algebraic_structures.impl.ModularIntField;
 import edu.stanford.math.plex4.algebraic_structures.impl.RationalField;
+import edu.stanford.math.plex4.deprecated_tests.PersistentHomologyTest;
 import edu.stanford.math.plex4.examples.PointCloudExamples;
 import edu.stanford.math.plex4.examples.SimplexStreamExamples;
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
+import edu.stanford.math.plex4.homology.chain_basis.SimplexComparator;
 import edu.stanford.math.plex4.homology.streams.impl.LazyWitnessStream;
+import edu.stanford.math.plex4.homology.streams.impl.VietorisRipsStream;
 import edu.stanford.math.plex4.homology.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.math.metric.impl.EuclideanMetricSpace;
 import edu.stanford.math.plex4.math.metric.interfaces.SearchableFiniteMetricSpace;
 import edu.stanford.math.plex4.math.metric.landmark.LandmarkSelector;
 import edu.stanford.math.plex4.math.metric.landmark.MaxMinLandmarkSelector;
 import edu.stanford.math.plex4.math.metric.landmark.RandomLandmarkSelector;
-import edu.stanford.math.plex_viewer.ObjectRenderer;
-import edu.stanford.math.plex_viewer.OpenGLManager;
-import edu.stanford.math.plex_viewer.SimplexStreamViewer;
+import edu.stanford.math.plex4.utility.RandomUtility;
 
 public class OpenGLTest {
 	public static void main(String[] args) throws OptimizationException, FunctionEvaluationException, IllegalArgumentException {
-		testSphere();		
+		testCircleMapping();		
 	}
 	
 	public static void testSphere() {
@@ -38,19 +40,29 @@ public class OpenGLTest {
 		
 		openGLManager.initialize();
 		
-		//PersistentHomologyTest.testClassicalPersistentHomology(stream, SimplexComparator.getInstance(), ModularIntField.getInstance(2), 3);
+		PersistentHomologyTest.testClassicalPersistentHomology(stream, SimplexComparator.getInstance(), ModularIntField.getInstance(2), 3);
 	}
 	
 	public static void testCircleMapping() throws OptimizationException, FunctionEvaluationException, IllegalArgumentException {
-		int domainCardinality = 4;
-		int codomainCardinality = 6;
+		int domainCardinality = 30;
+		int codomainCardinality = 30;
 		int d = 2;
 		
-		SearchableFiniteMetricSpace<double[]> domainMetricSpace = new EuclideanMetricSpace(PointCloudExamples.getEquispacedCirclePoints(domainCardinality));
-		SearchableFiniteMetricSpace<double[]> codomainMetricSpace = new EuclideanMetricSpace(PointCloudExamples.getEquispacedCirclePoints(codomainCardinality));
+		//SearchableFiniteMetricSpace<double[]> domainMetricSpace = new EuclideanMetricSpace(PointCloudExamples.getEquispacedCirclePoints(domainCardinality));
+		//SearchableFiniteMetricSpace<double[]> codomainMetricSpace = new EuclideanMetricSpace(PointCloudExamples.getEquispacedCirclePoints(codomainCardinality));
 		
-		AbstractFilteredStream<Simplex> domainStream = SimplexStreamExamples.getCircle(domainCardinality);
-		AbstractFilteredStream<Simplex> codomainStream = SimplexStreamExamples.getCircle(codomainCardinality);
+		RandomUtility.initializeWithSeed(0);
+		SearchableFiniteMetricSpace<double[]> domainMetricSpace = new EuclideanMetricSpace(PointCloudExamples.getRandomSpherePoints(20, 1));
+		SearchableFiniteMetricSpace<double[]> codomainMetricSpace = new EuclideanMetricSpace(PointCloudExamples.getRandomSpherePoints(20, 1));
+		
+		AbstractFilteredStream<Simplex> domainStream = new VietorisRipsStream<double[]>(domainMetricSpace, 0.4, 1);
+		AbstractFilteredStream<Simplex> codomainStream = new VietorisRipsStream<double[]>(codomainMetricSpace, 0.4, 1);
+		
+		domainStream.finalizeStream();
+		codomainStream.finalizeStream();
+		
+		//AbstractFilteredStream<Simplex> domainStream = SimplexStreamExamples.getCircle(domainCardinality);
+		//AbstractFilteredStream<Simplex> codomainStream = SimplexStreamExamples.getCircle(codomainCardinality);
 		//AbstractFilteredStream<Simplex> domainStream = SimplicialComplexOperations.disjointUnion(SimplexStreamExamples.getCircle(3), SimplexStreamExamples.getCircle(3));
 		//AbstractFilteredStream<Simplex> codomainStream = SimplexStreamExamples.getTorus();
 		
@@ -60,8 +72,8 @@ public class OpenGLTest {
 	}
 	
 	public static void testMapping() throws OptimizationException, FunctionEvaluationException, IllegalArgumentException {
-		int domainCardinality = 20;
-		int codomainCardinality = 20;
+		int domainCardinality = 4;
+		int codomainCardinality = 4;
 		int d = 3;
 		
 		SearchableFiniteMetricSpace<double[]> domainMetricSpace = new EuclideanMetricSpace(PointCloudExamples.getRandomSpherePoints(domainCardinality, d));

@@ -9,12 +9,13 @@ import javax.media.opengl.GL;
 import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.optimization.OptimizationException;
 
+import edu.stanford.math.plex4.algebraic_structures.impl.DoubleArrayModule;
 import edu.stanford.math.plex4.algebraic_structures.interfaces.GenericOrderedField;
 import edu.stanford.math.plex4.array_utility.ArrayConversion;
-import edu.stanford.math.plex4.datastructures.DoubleFormalSum;
 import edu.stanford.math.plex4.datastructures.pairs.GenericPair;
 import edu.stanford.math.plex4.free_module.AbstractGenericFormalSum;
 import edu.stanford.math.plex4.free_module.AbstractGenericFreeModule;
+import edu.stanford.math.plex4.free_module.DoubleFormalSum;
 import edu.stanford.math.plex4.free_module.ModuleMorphismRepresentation;
 import edu.stanford.math.plex4.free_module.UnorderedGenericFreeModule;
 import edu.stanford.math.plex4.functional.GenericDoubleFunction;
@@ -25,9 +26,7 @@ import edu.stanford.math.plex4.homology.mapping.MappingUtility;
 import edu.stanford.math.plex4.homology.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.io2.FileIOUtility;
 import edu.stanford.math.plex4.math.metric.interfaces.FiniteMetricSpace;
-import edu.stanford.math.plex_viewer.ObjectRenderer;
-import edu.stanford.math.plex_viewer.SimplexStreamViewer;
-import gnu.trove.iterator.TObjectDoubleIterator;
+import gnu.trove.TObjectDoubleIterator;
 
 public class MappingViewer<F extends Number> implements ObjectRenderer {
 	private final AbstractFilteredStream<Simplex> domainStream;
@@ -62,14 +61,16 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 		DoubleFormalSum<GenericPair<Simplex, Simplex>> optimalChainMap = this.computeFunction();
 		
 		//this.codomainViewer.setColorFunction(this.pushforwardColorFunction(MappingUtility.toFunctionObject(optimalChainMap), this.domainViewer.getDefaultColorFunction(), this.domainStream));
-		//this.codomainViewer.setColorFunction(MappingUtility.pushforward(MappingUtility.toFunctionObject(abs(optimalChainMap)), this.domainViewer.getDefaultColorFunction(), this.domainStream, new DoubleArrayModule(3)));
+		double c = (double) codomainMetricSpace.size() / (double) domainMetricSpace.size();
+		c = 1;
+		this.codomainViewer.setColorFunction(MappingUtility.pushforward(MappingUtility.toFunctionObject(scalarMultiply(abs(optimalChainMap), c)), this.domainViewer.getDefaultColorFunction(), this.domainStream, new DoubleArrayModule(3)));
 	}
 	
 	private DoubleFormalSum<GenericPair<Simplex, Simplex>> computeFunction() {
 		ModuleMorphismRepresentation<F, Simplex, Simplex> rep = new ModuleMorphismRepresentation<F, Simplex, Simplex>(this.domainStream, this.codomainStream);
 		List<double[]> list = null;
 		try {
-			list = FileIOUtility.readNumericCSVFile("D:\\Documents\\Code\\javaplex\\data\\runs\\10-08-11\\weighted_min.txt", ",");
+			list = FileIOUtility.readNumericCSVFile("D:\\Documents\\Code\\javaplex\\src\\matlab\\mapping\\corner_point.txt", ",");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,7 +82,7 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 	
 	
 	private DoubleFormalSum<GenericPair<Simplex, Simplex>> computeOptimalFunction() throws OptimizationException, FunctionEvaluationException, IllegalArgumentException {
-		HomComplexComputation<F, Simplex, Simplex> computation = new HomComplexComputation<F, Simplex, Simplex>(domainStream, codomainStream, SimplexComparator.getInstance(), SimplexComparator.getInstance(), field);
+		HomComplexComputation<F> computation = new HomComplexComputation<F>(domainStream, codomainStream, SimplexComparator.getInstance(), SimplexComparator.getInstance(), field);
 		
 		List<AbstractGenericFormalSum<F, GenericPair<Simplex, Simplex>>> generatingCycles = computation.computeGeneratingCycles();
 		AbstractGenericFormalSum<F, GenericPair<Simplex, Simplex>> cycleSum = computation.sumGeneratingCycles(generatingCycles);
@@ -117,16 +118,30 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 		return result;
 	}
 	
+	private DoubleFormalSum<GenericPair<Simplex, Simplex>> scalarMultiply(DoubleFormalSum<GenericPair<Simplex, Simplex>> chainMap, double c)
+	{
+		DoubleFormalSum<GenericPair<Simplex, Simplex>> result = new DoubleFormalSum<GenericPair<Simplex, Simplex>>();
+		for (TObjectDoubleIterator<GenericPair<Simplex, Simplex>> iterator = chainMap.iterator(); iterator.hasNext(); ) {
+			iterator.advance();
+			result.put(c * (iterator.value()), iterator.key());
+		}
+		return result;
+	}
+	
+	
+	@Override
 	public void processSpecializedKeys(KeyEvent e) {
 		this.domainViewer.processSpecializedKeys(e);
 		this.codomainViewer.processSpecializedKeys(e);
 	}
 
+	@Override
 	public void renderShape(GL gl) {
 		this.domainViewer.renderShape(gl);
 		this.codomainViewer.renderShape(gl);
 	}
 
+	@Override
 	public void init(GL gl) {
 		this.domainViewer.init(gl);
 		this.codomainViewer.init(gl);

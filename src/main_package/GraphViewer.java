@@ -6,9 +6,8 @@ import javax.media.opengl.GL;
 
 import edu.stanford.math.plex4.graph.AbstractUndirectedGraph;
 import edu.stanford.math.plex4.math.metric.impl.EuclideanMetricSpace;
-import edu.stanford.math.plex_viewer.ObjectRenderer;
-import gnu.trove.iterator.TIntIterator;
-import gnu.trove.set.TIntSet;
+import gnu.trove.TIntHashSet;
+import gnu.trove.TIntIterator;
 
 public class GraphViewer implements ObjectRenderer {
 	protected AbstractUndirectedGraph graph;
@@ -23,7 +22,7 @@ public class GraphViewer implements ObjectRenderer {
 		int n = this.graph.getNumVertices();
 		
 		for (int i = 0; i < n; i++) {
-			TIntSet set = graph.getLowerNeighbors(i);
+			TIntHashSet set = graph.getLowerNeighbors(i);
 			for (TIntIterator iterator = set.iterator(); iterator.hasNext(); ) {
 				int j = iterator.next();
 				double[] point_i = this.metricSpace.getPoint(i);
@@ -45,6 +44,7 @@ public class GraphViewer implements ObjectRenderer {
 
 	public void processSpecializedKeys(KeyEvent e) {}
 
+	@Override
 	public void init(GL gl) {
 		// TODO Auto-generated method stub
 	}
