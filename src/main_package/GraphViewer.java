@@ -44,7 +44,6 @@ public class GraphViewer implements ObjectRenderer {
 
 	public void processSpecializedKeys(KeyEvent e) {}
 
-	@Override
 	public void init(GL gl) {
 		// TODO Auto-generated method stub
 	}

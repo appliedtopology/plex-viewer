@@ -125,7 +125,6 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	public GenericFunction<Simplex, double[]> getDefaultColorFunction() {
 		return new GenericFunction<Simplex, double[]>() {
 
-			@Override
 			public double[] evaluate(Simplex argument) {
 				return trigColorFunction(argument);
 				//return getSphericalColor(argument);
@@ -204,9 +203,9 @@ public class SimplexStreamViewer implements ObjectRenderer {
 				//double[] normalizedPoint = this.normalizePoint(this.stream.getPoint(vertices[vertexIndex]));
 				double[] normalizedPoint = this.toSphericalCoordinates(this.stream.getPoint(vertices[vertexIndex]));
 
-				double h = normalizedPoint[1] * (2 * 360 / Math.PI);
-				double s = normalizedPoint[2] / (Math.PI / 2);
-				double v = 1;
+				double h = ((int)(normalizedPoint[2] * (180 / Math.PI)) + (int)(normalizedPoint[1] * (180 / Math.PI))) % 360;
+				double s = 0.5 + 0.25 * (1 + Math.cos(normalizedPoint[0]));
+				double v = 0.5 + 0.25 * (1 + Math.sin(normalizedPoint[0]));
 				convertHSVtoRGB(h, s, v, rgb);
 			}
 			for (int pointIndex = 0; pointIndex < rgb.length; pointIndex++) {
@@ -305,7 +304,6 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	}
 
 
-	@Override
 	public void processSpecializedKeys(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
 			this.maxFiltrationValue += delta;
@@ -384,7 +382,6 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		return means;
 	}
 
-	@Override
 	public void init(GL gl) {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_POINT_SMOOTH);

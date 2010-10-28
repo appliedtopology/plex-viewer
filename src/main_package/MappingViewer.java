@@ -48,8 +48,8 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 		this.chainModule = new UnorderedGenericFreeModule<F, GenericPair<Simplex, Simplex>>(this.field);
 		
 		
-		this.domainViewer.setMeanShift(new double[]{-2, 0});
-		this.codomainViewer.setMeanShift(new double[]{2, 0});
+		this.domainViewer.setMeanShift(new double[]{-2, 0, 0});
+		this.codomainViewer.setMeanShift(new double[]{2, 0, 0});
 		
 		/*
 		GenericFormalSum<F, GenericPair<Simplex, Simplex>> generatingCycle = this.computeMapping();
@@ -70,7 +70,7 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 		ModuleMorphismRepresentation<F, Simplex, Simplex> rep = new ModuleMorphismRepresentation<F, Simplex, Simplex>(this.domainStream, this.codomainStream);
 		List<double[]> list = null;
 		try {
-			list = FileIOUtility.readNumericCSVFile("D:\\Documents\\Code\\javaplex\\src\\matlab\\mapping\\corner_point.txt", ",");
+			list = FileIOUtility.readNumericCSVFile("../javaplex/src/matlab/mapping/corner_point.txt", ",");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,19 +129,16 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 	}
 	
 	
-	@Override
 	public void processSpecializedKeys(KeyEvent e) {
 		this.domainViewer.processSpecializedKeys(e);
 		this.codomainViewer.processSpecializedKeys(e);
 	}
 
-	@Override
 	public void renderShape(GL gl) {
 		this.domainViewer.renderShape(gl);
 		this.codomainViewer.renderShape(gl);
 	}
 
-	@Override
 	public void init(GL gl) {
 		this.domainViewer.init(gl);
 		this.codomainViewer.init(gl);

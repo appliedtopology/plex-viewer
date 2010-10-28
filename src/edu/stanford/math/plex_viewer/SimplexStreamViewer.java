@@ -13,7 +13,6 @@ import edu.stanford.math.plex4.homology.chain_basis.Simplex;
 import edu.stanford.math.plex4.homology.streams.impl.GeometricSimplexStream;
 import edu.stanford.math.plex4.homology.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.math.metric.interfaces.FiniteMetricSpace;
-import edu.stanford.math.plex4.math.metric.utility.MetricUtility;
 import edu.stanford.math.plex4.utility.ExceptionUtility;
 
 /**
@@ -37,7 +36,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		this.stream = new GeometricSimplexStream(stream, metricSpace);
 		this.dimension = metricSpace.getPoint(0).length;
 		this.numPoints = metricSpace.size();
-		this.empericalMeans = MetricUtility.computeMeans(metricSpace);
+		this.empericalMeans = null;// MetricUtility.computeMeans(metricSpace);
 		this.delta = 0.1;
 		this.meanShift = new double[this.dimension];
 		this.colorScheme = new EqualIntensityColorScheme();
