@@ -48,8 +48,8 @@ public class MappingViewer<F extends Number> implements ObjectRenderer {
 		this.chainModule = new UnorderedGenericFreeModule<F, GenericPair<Simplex, Simplex>>(this.field);
 		
 		
-		this.domainViewer.setMeanShift(new double[]{-2, 0, 0});
-		this.codomainViewer.setMeanShift(new double[]{2, 0, 0});
+		this.domainViewer.setMeanShift(new double[]{-2, 0});
+		this.codomainViewer.setMeanShift(new double[]{2, 0});
 		
 		/*
 		GenericFormalSum<F, GenericPair<Simplex, Simplex>> generatingCycle = this.computeMapping();
