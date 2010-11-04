@@ -1,6 +1,6 @@
 package edu.stanford.math.plex_viewer;
 
-import edu.stanford.math.plex4.array_utility.DoubleArrayMath;
+import edu.stanford.math.primitivelib.autogen.array.DoubleArrayMath;
 
 /**
  * This class implements a coloring scheme that assigns a coloring
@@ -10,23 +10,35 @@ import edu.stanford.math.plex4.array_utility.DoubleArrayMath;
  * @author Andrew Tausz
  *
  */
-public class EqualIntensityColorScheme extends ColorScheme {
-	private double saturation = 1;
+public class EqualIntensityColorScheme implements ColorScheme {
+	private float saturation = 1;
 	
-	public double[] computeColor(double[] point) {
+	public float[] computeColor(double[] point) {
 		// if we get the origin, then simply return black
 		if (DoubleArrayMath.norm(point, 1) == 0) {
-			return new double[]{0, 0, 0};
+			return new float[]{0, 0, 0};
 		}
 		// compute the standard deformation retract R^3\{0} -> S^2
-		return normalize(point, this.saturation);
+		return normalize(resizeArray(point, 3), this.saturation);
 	}
 
-	private static double[] normalize(double[] point, double targetNorm) {
-		double[] result = new double[point.length];
+	private static float[] normalize(double[] point, float targetNorm) {
+		float[] result = new float[point.length];
 		double multiplier = targetNorm / DoubleArrayMath.norm(point, 2);
 		for (int i = 0; i < point.length; i++) {
-			result[i] = multiplier * Math.abs(point[i]);
+			result[i] = (float) (multiplier * Math.abs(point[i]));
+		}
+		return result;
+	}
+	
+	private static double[] resizeArray(double[] array, int newSize) {
+		if (array.length == newSize) {
+			return array;
+		}
+		double[] result = new double[3];
+		int n = Math.min(array.length, 3);
+		for (int i = 0; i < n; i++) {
+			result[i] = array[i];
 		}
 		return result;
 	}

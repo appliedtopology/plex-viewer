@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src_test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/colt.jar"/>
-	<classpathentry kind="lib" path="lib/commons-math-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/javaplex.jar"/>
 	<classpathentry kind="lib" path="lib/ext/gluegen-rt.jar">
 		<attributes>
@@ -15,6 +14,5 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="plex-viewer/lib/ext"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/trove-2.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
