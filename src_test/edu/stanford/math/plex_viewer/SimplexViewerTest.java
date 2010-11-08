@@ -19,7 +19,7 @@ public class SimplexViewerTest {
 	}
 
 	public static void testSphere() {
-		int numPoints = 500;
+		int numPoints = 200;
 		int sphereDimension = 2;
 		int maxDimension = 2;
 		double maxFiltrationValue = 0.3;

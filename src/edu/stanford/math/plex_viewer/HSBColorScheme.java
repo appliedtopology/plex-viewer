@@ -2,6 +2,10 @@ package edu.stanford.math.plex_viewer;
 
 import java.awt.Color;
 
+/**
+ * TODO: Fix or delete
+ *
+ */
 public class HSBColorScheme implements ColorScheme {
 	public HSBColorScheme() {}
 	

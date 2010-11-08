@@ -16,6 +16,12 @@ import javax.media.opengl.glu.GLU;
 
 import com.sun.opengl.util.Animator;
 
+/**
+ * This class sets up the OpenGL classes and renders a given object. 
+ * 
+ * @author Andrew Tausz
+ *
+ */
 public class OpenGLManager implements GLEventListener, KeyListener, MouseListener, MouseMotionListener {
 	private float x_angle = 0.0f;
 	private float y_angle = 0.0f;
@@ -64,11 +70,9 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		
-		// call init on renderer
 		this.renderer.init(gl);
 		
 		gLDrawable.addKeyListener(this);
-		
 	}
 
 	public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height) {
@@ -88,7 +92,6 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 	public void exit(){
 		animator.stop();
 		frame.dispose();
-		System.exit(0);
 	}
 
 	public void initialize() {
@@ -138,37 +141,17 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 
 	public void keyTyped(KeyEvent e) {}
 
-	public void mouseClicked(MouseEvent arg0) {
-		this.x_angle = arg0.getPoint().x;
-		this.y_angle = arg0.getPoint().y;
-	}
+	public void mouseDragged(MouseEvent e) {}
 
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseMoved(MouseEvent e) {}
 
-	}
+	public void mouseClicked(MouseEvent e) {}
 
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mousePressed(MouseEvent e) {}
 
-	}
+	public void mouseReleased(MouseEvent e) {}
 
-	public void mousePressed(MouseEvent arg0) {
-		this.x_angle = arg0.getPoint().x;
-		this.y_angle = arg0.getPoint().y;
-	}
+	public void mouseEntered(MouseEvent e) {}
 
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void mouseDragged(MouseEvent arg0) {
-
-	}
-
-	public void mouseMoved(MouseEvent arg0) {
-		this.x_angle = arg0.getPoint().x;
-		this.y_angle = arg0.getPoint().y;
-	}
+	public void mouseExited(MouseEvent e) {}
 }

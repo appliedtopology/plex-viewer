@@ -11,6 +11,12 @@ import edu.stanford.math.primitivelib.autogen.array.FloatArrayMath;
 import edu.stanford.math.primitivelib.metric.impl.EuclideanMetricSpace;
 import edu.stanford.math.primitivelib.metric.interfaces.AbstractObjectMetricSpace;
 
+/**
+ * This class draws geometric realizations of simplicial complexes.
+ * 
+ * @author Andrew Tausz
+ *
+ */
 public class SimplexStreamViewer implements ObjectRenderer {
 	private final GeometricSimplexStream stream;
 	private final int maxFiltrationIndex;
@@ -18,17 +24,50 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	
 	private int currentFiltrationIndex = 0;
 	private ColorScheme colorSheme = new EqualIntensityColorScheme();
-	private int maxNumSimplices = 2000;
+	private int maxNumSimplices = 5000;
 	
+	/**
+	 * This constructor initializes the class with a given GeometricSimplexStream
+	 * object.
+	 * 
+	 * @param geometricSimplexStream the GeometricSimplexStream object to initialize with
+	 */
+	public SimplexStreamViewer(GeometricSimplexStream geometricSimplexStream) {
+		this.stream = geometricSimplexStream;
+		this.maxFiltrationIndex = this.stream.getMaximumFiltrationIndex();
+	}
+	
+	/**
+	 * This constructor initializes the class with an abstract simplicial complex as well as a
+	 * set of points in Euclidean space.
+	 * 
+	 * @param stream the abstract simplicial complex
+	 * @param points the points of the vertices in Euclidean space (should be in R^2 or R^3)
+	 */
 	public SimplexStreamViewer(AbstractFilteredStream<Simplex> stream, double[][] points) {
 		this(stream, new EuclideanMetricSpace(points));
 	}
 
+	/**
+	 * This constructor initializes the class with an abstract simplicial complex as well as
+	 * a Euclidean metric space.
+	 * 
+	 * @param stream the abstract simplicial complex
+	 * @param metricSpace the geometric points in Euclidean space (should be in R^2 or R^3)
+	 */
 	public SimplexStreamViewer(AbstractFilteredStream<Simplex> stream, AbstractObjectMetricSpace<double[]> metricSpace) {
 		this.stream = new GeometricSimplexStream(stream, metricSpace);
 		this.maxFiltrationIndex = stream.getMaximumFiltrationIndex();
 	}
-
+	
+	/**
+	 * This function sets the color scheme.
+	 * 
+	 * @param colorScheme the new color scheme
+	 */
+	public void setColorScheme(ColorScheme colorScheme) {
+		this.colorSheme = colorScheme;
+	}
 
 	public void init(GL gl) {
 		gl.glEnable(GL.GL_DEPTH_TEST);
@@ -36,7 +75,6 @@ public class SimplexStreamViewer implements ObjectRenderer {
         gl.glEnable(GL.GL_BLEND);
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         gl.glPointSize(this.pointSize);
-
 	}
 
 	public void renderShape(GL gl) {
@@ -62,6 +100,13 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	}
 
 
+	/**
+	 * This is a helper function which draws the vertices of a given simplex.
+	 * 
+	 * @param gl the GL object to draw with
+	 * @param simplex the simplex to draw
+	 * @param glShapeCode the shape code to use
+	 */
 	private void drawSequence(GL gl, Simplex simplex, int glShapeCode) {
 		int[] vertices = simplex.getVertices();
 		float[] color = this.computeColor(simplex);
@@ -78,6 +123,12 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		gl.glEnd();
 	}
 
+	/**
+	 * This function computes the color of a simplex by averaging the colors of its vertices.
+	 * 
+	 * @param simplex the simplex to compute the color of
+	 * @return the average color of the vertices of the simplex
+	 */
 	private float[] computeColor(Simplex simplex) {
 		float[] rgb = new float[3];
 
@@ -92,8 +143,6 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		return rgb;
 	}
 
-
-
 	public void processSpecializedKeys(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
 			this.currentFiltrationIndex += 1;
@@ -102,7 +151,5 @@ public class SimplexStreamViewer implements ObjectRenderer {
 			this.currentFiltrationIndex -= 1;
 			this.currentFiltrationIndex = Math.max(0, this.currentFiltrationIndex);
 		}
-
 	}
-
 }

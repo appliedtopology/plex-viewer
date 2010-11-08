@@ -5,7 +5,8 @@ import java.awt.event.KeyEvent;
 import javax.media.opengl.GL;
 
 /**
- * This interface defines the functionality for a 
+ * This interface defines the functionality for a class that produces an OpenGL
+ * rendering of an object.
  * 
  * @author Andrew Tausz
  *

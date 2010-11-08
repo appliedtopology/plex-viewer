@@ -4,7 +4,7 @@ import edu.stanford.math.primitivelib.autogen.array.DoubleArrayMath;
 
 /**
  * This class implements a coloring scheme that assigns a coloring
- * that has uniform energy (2-norm) for each point. In otherwords,
+ * that has uniform energy (2-norm) for each point. In other words,
  * it computes a mapping from R^n -> S^2. 
  * 
  * @author Andrew Tausz
