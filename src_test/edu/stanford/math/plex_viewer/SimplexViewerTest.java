@@ -1,6 +1,6 @@
 package edu.stanford.math.plex_viewer;
 
-import edu.stanford.math.plex4.api.FilteredComplexInterface;
+import edu.stanford.math.plex4.api.FilteredStreamInterface;
 import edu.stanford.math.plex4.examples.PointCloudExamples;
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
 import edu.stanford.math.plex4.metric.landmark.LandmarkSelector;
@@ -42,7 +42,7 @@ public class SimplexViewerTest {
 
 		AbstractSearchableMetricSpace<double[]> metricSpace = new EuclideanMetricSpace(PointCloudExamples.getRandomFigure8Points(numPoints)); 
 		LandmarkSelector<double[]> selector = new MaxMinLandmarkSelector<double[]>(metricSpace, numLandmarkPoints);
-		AbstractFilteredStream<Simplex> stream = FilteredComplexInterface.createPlex4LazyWitnessStream(selector, maxDimension, maxFiltrationValue, numDivisions);
+		AbstractFilteredStream<Simplex> stream = FilteredStreamInterface.createPlex4LazyWitnessStream(selector, maxDimension, maxFiltrationValue, numDivisions);
 		stream.finalizeStream();
 
 		OpenGLManager openGLManager = new OpenGLManager(new SimplexStreamViewer(stream, selector));
