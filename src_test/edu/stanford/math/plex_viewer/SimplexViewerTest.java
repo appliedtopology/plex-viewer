@@ -15,16 +15,16 @@ public class SimplexViewerTest {
 
 	public static void main(String[] args) {
 		RandomUtility.initializeWithSeed(0);
-		testSphere();
+		testVietorisRipsComplex();
 	}
 
-	public static void testSphere() {
+	public static void testVietorisRipsComplex() {
 		int numPoints = 200;
-		int sphereDimension = 2;
+		int dimension = 3;
 		int maxDimension = 2;
-		double maxFiltrationValue = 0.3;
-
-		AbstractSearchableMetricSpace<double[]> metricSpace = new EuclideanMetricSpace(PointCloudExamples.getRandomSpherePoints(numPoints, sphereDimension)); 
+		double maxFiltrationValue = 0.8;
+		double[][] points = PointCloudExamples.getGaussianPoints(numPoints, dimension);
+		AbstractSearchableMetricSpace<double[]> metricSpace = new EuclideanMetricSpace(points); 
 		VietorisRipsStream<double[]> stream = new VietorisRipsStream<double[]>(metricSpace, maxFiltrationValue, maxDimension);
 		stream.finalizeStream();
 

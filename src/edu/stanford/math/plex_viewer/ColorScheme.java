@@ -8,7 +8,7 @@ package edu.stanford.math.plex_viewer;
  * @author Andrew Tausz
  *
  */
-public interface ColorScheme {
+public interface ColorScheme<T> {
 	
 	/**
 	 * This function computes the color of a point in R^n.
@@ -16,5 +16,5 @@ public interface ColorScheme {
 	 * @param point the input point
 	 * @return the color of the point according to the coloring scheme
 	 */
-	public float[] computeColor(double[] point);
+	public float[] computeColor(T point);
 }

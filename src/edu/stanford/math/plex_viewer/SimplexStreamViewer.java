@@ -7,7 +7,6 @@ import javax.media.opengl.GL;
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
 import edu.stanford.math.plex4.streams.impl.GeometricSimplexStream;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
-import edu.stanford.math.primitivelib.autogen.array.FloatArrayMath;
 import edu.stanford.math.primitivelib.metric.impl.EuclideanMetricSpace;
 import edu.stanford.math.primitivelib.metric.interfaces.AbstractObjectMetricSpace;
 
@@ -23,7 +22,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	private final float pointSize = 10.0f;
 	
 	private int currentFiltrationIndex = 0;
-	private ColorScheme colorSheme = new EqualIntensityColorScheme();
+	private ColorScheme<Simplex> colorScheme;
 	private int maxNumSimplices = 5000;
 	
 	/**
@@ -35,6 +34,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	public SimplexStreamViewer(GeometricSimplexStream geometricSimplexStream) {
 		this.stream = geometricSimplexStream;
 		this.maxFiltrationIndex = this.stream.getMaximumFiltrationIndex();
+		this.colorScheme = new AveragedSimplicialColorScheme<double[]>(this.stream, new HSBColorScheme());
 	}
 	
 	/**
@@ -56,8 +56,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	 * @param metricSpace the geometric points in Euclidean space (should be in R^2 or R^3)
 	 */
 	public SimplexStreamViewer(AbstractFilteredStream<Simplex> stream, AbstractObjectMetricSpace<double[]> metricSpace) {
-		this.stream = new GeometricSimplexStream(stream, metricSpace);
-		this.maxFiltrationIndex = stream.getMaximumFiltrationIndex();
+		this(new GeometricSimplexStream(stream, metricSpace));
 	}
 	
 	/**
@@ -65,8 +64,12 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	 * 
 	 * @param colorScheme the new color scheme
 	 */
-	public void setColorScheme(ColorScheme colorScheme) {
-		this.colorSheme = colorScheme;
+	public void setColorScheme(ColorScheme<Simplex> colorScheme) {
+		this.colorScheme = colorScheme;
+	}
+	
+	public ColorScheme<Simplex> getColorScheme() {
+		return this.colorScheme;
 	}
 
 	public void init(GL gl) {
@@ -109,7 +112,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	 */
 	private void drawSequence(GL gl, Simplex simplex, int glShapeCode) {
 		int[] vertices = simplex.getVertices();
-		float[] color = this.computeColor(simplex);
+		float[] color = this.colorScheme.computeColor(simplex);
 		gl.glBegin(glShapeCode);
 		for (int vertexIndex = 0; vertexIndex < vertices.length; vertexIndex++) {
 			double[] point = this.stream.getPoint(vertices[vertexIndex]);
@@ -121,26 +124,6 @@ public class SimplexStreamViewer implements ObjectRenderer {
 			}
 		}
 		gl.glEnd();
-	}
-
-	/**
-	 * This function computes the color of a simplex by averaging the colors of its vertices.
-	 * 
-	 * @param simplex the simplex to compute the color of
-	 * @return the average color of the vertices of the simplex
-	 */
-	private float[] computeColor(Simplex simplex) {
-		float[] rgb = new float[3];
-
-		int[] vertices = simplex.getVertices();
-		for (int vertexIndex = 0; vertexIndex < vertices.length; vertexIndex++) {
-			double[] vertexPoint = this.stream.getPoint(vertices[vertexIndex]);
-			FloatArrayMath.accumulate(rgb, this.colorSheme.computeColor(vertexPoint));
-		}
-
-		FloatArrayMath.inPlaceMultiply(rgb, 1.0f / (float) vertices.length);
-
-		return rgb;
 	}
 
 	public void processSpecializedKeys(KeyEvent e) {

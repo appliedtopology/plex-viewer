@@ -3,10 +3,13 @@ package edu.stanford.math.plex_viewer;
 import java.awt.Color;
 
 /**
- * TODO: Fix or delete
+ * This class implements a color scheme on Euclidean space which uses the HSB (hue, saturation,
+ * brightness) color system. 
+ * 
+ * @author Andrew Tausz
  *
  */
-public class HSBColorScheme implements ColorScheme {
+public class HSBColorScheme implements ColorScheme<double[]> {
 	public HSBColorScheme() {}
 	
 	public float[] computeColor(double[] point) {
@@ -17,28 +20,31 @@ public class HSBColorScheme implements ColorScheme {
 			double theta = Math.atan2(point[1], point[0]);
 			double r = point[0]*point[0] + point[1]*point[1];
 
-			float hue = (float) (theta * (180 / Math.PI) % 360);
-			if (hue < 0) {
-				hue += 360;
-			}
-			
+			float hue = (float) (theta * (0.5 / Math.PI));
 			float saturation = (float) (0.5 + 0.25 * (1 + Math.cos(r)));;
 			float brightness = 0.9f;
 
 			return toRGB(hue, saturation, brightness);
-
+			
 		} else {
-
 			double[] sphericalCoords = this.toSphericalCoordinates(point);
 
-			float hue = ((int)(sphericalCoords[2] * (180 / Math.PI)) + (int)(sphericalCoords[1] * (180 / Math.PI))) % 360;
+			float hue = ((float)(sphericalCoords[2] * (0.5 / Math.PI)) + (float)(sphericalCoords[1] * (0.5 / Math.PI)));
 			float saturation = (float) (0.5 + 0.25 * (1 + Math.cos(sphericalCoords[0])));
-			float brightness = (float) (0.5 + 0.25 * (1 + Math.sin(sphericalCoords[0])));
+			float brightness = (float) (0.5 + 0.25 * (1 + Math.sin(sphericalCoords[1])));
 
 			return toRGB(hue, saturation, brightness);
 		}
 	}
 
+	/**
+	 * This function converts from HSB format to RGB format.
+	 * 
+	 * @param hue
+	 * @param saturation
+	 * @param brightness
+	 * @return
+	 */
 	private float[] toRGB(float hue, float saturation, float brightness) {
 		float[] rgb = new float[3];
 		int rbg_int_value = Color.HSBtoRGB(hue, saturation, brightness);

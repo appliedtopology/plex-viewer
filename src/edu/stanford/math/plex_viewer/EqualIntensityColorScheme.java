@@ -10,7 +10,7 @@ import edu.stanford.math.primitivelib.autogen.array.DoubleArrayMath;
  * @author Andrew Tausz
  *
  */
-public class EqualIntensityColorScheme implements ColorScheme {
+public class EqualIntensityColorScheme implements ColorScheme<double[]> {
 	private float saturation = 1;
 	
 	public float[] computeColor(double[] point) {
