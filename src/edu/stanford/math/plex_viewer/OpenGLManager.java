@@ -62,7 +62,7 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 	public void displayChanged(GLAutoDrawable gLDrawable, boolean modeChanged, boolean deviceChanged) {}
 
 	public void init(GLAutoDrawable gLDrawable) {
-		GL gl = gLDrawable.getGL();
+		final GL gl = gLDrawable.getGL();
 		gl.glShadeModel(GL.GL_SMOOTH);
 		gl.glClearColor(this.backgroundIntensity, this.backgroundIntensity, this.backgroundIntensity, this.backgroundIntensity);
 		gl.glClearDepth(1.0f);
@@ -76,7 +76,7 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 	}
 
 	public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height) {
-		GL gl = gLDrawable.getGL();
+		final GL gl = gLDrawable.getGL();
 		if(height <= 0) {
 			height = 1;
 		}
@@ -154,4 +154,9 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 	public void mouseEntered(MouseEvent e) {}
 
 	public void mouseExited(MouseEvent e) {}
+
+	public void dispose(GLAutoDrawable arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
