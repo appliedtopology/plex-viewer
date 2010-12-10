@@ -20,6 +20,8 @@ public class MappingViewer implements ObjectRenderer {
 		this.domainViewer = new SimplexStreamViewer(domainStream, domainPoints);
 		this.codomainViewer = new SimplexStreamViewer(codomainStream, codomainPoints);
 		this.codomainViewer.setColorScheme(new PushforwardColorScheme<Simplex, Simplex>(domainViewer.getColorScheme(), mapping));
+		
+		this.codomainViewer.setMaxDimension(2);
 	}
 	
 	public MappingViewer(AbstractFilteredStream<Simplex> domainStream, double[][] domainPoints, 

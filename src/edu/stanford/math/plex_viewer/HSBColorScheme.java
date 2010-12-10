@@ -29,7 +29,7 @@ public class HSBColorScheme implements ColorScheme<double[]> {
 		} else {
 			double[] sphericalCoords = this.toSphericalCoordinates(point);
 
-			float hue = ((float)(sphericalCoords[2] * (0.5 / Math.PI)) + (float)(sphericalCoords[1] * (0.5 / Math.PI)));
+			float hue = ((float)(sphericalCoords[2] * (0.5 / Math.PI)) + (float)(sphericalCoords[1] * (0.7 / Math.PI)));
 			float saturation = (float) (0.5 + 0.25 * (1 + Math.cos(sphericalCoords[0])));
 			float brightness = (float) (0.5 + 0.25 * (1 + Math.sin(sphericalCoords[1])));
 

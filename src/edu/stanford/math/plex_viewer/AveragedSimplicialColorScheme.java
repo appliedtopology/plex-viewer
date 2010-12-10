@@ -35,5 +35,4 @@ public class AveragedSimplicialColorScheme<T> implements ColorScheme<Simplex> {
 
 		return rgb;
 	}
-
 }

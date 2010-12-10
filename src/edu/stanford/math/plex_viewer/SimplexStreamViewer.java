@@ -24,6 +24,7 @@ public class SimplexStreamViewer implements ObjectRenderer {
 	private int currentFiltrationIndex = 0;
 	private ColorScheme<Simplex> colorScheme;
 	private int maxNumSimplices = 5000;
+	private int maxDimension = 10;
 	
 	/**
 	 * This constructor initializes the class with a given GeometricSimplexStream
@@ -72,6 +73,10 @@ public class SimplexStreamViewer implements ObjectRenderer {
 		return this.colorScheme;
 	}
 
+	public void setMaxDimension(int dimension) {
+		this.maxDimension = dimension;
+	}
+	
 	public void init(GL gl) {
 		gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glEnable(GL.GL_POINT_SMOOTH);
@@ -89,6 +94,10 @@ public class SimplexStreamViewer implements ObjectRenderer {
 			
 			if (stream.getFiltrationIndex(simplex) > currentFiltrationIndex) {
 				break;
+			}
+			
+			if (simplex.getDimension() > maxDimension) {
+				continue;
 			}
 
 			if (simplex.getDimension() == 0) {
