@@ -1,27 +1,97 @@
 package edu.stanford.math.plex_viewer;
 
 import java.io.IOException;
-import java.util.List;
 
-import edu.stanford.math.plex4.api.Plex4;
 import edu.stanford.math.plex4.examples.PointCloudExamples;
 import edu.stanford.math.plex4.examples.SimplexStreamExamples;
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
-import edu.stanford.math.plex4.io.FileIOUtility;
-import edu.stanford.math.plex4.metric.landmark.LandmarkSelector;
+import edu.stanford.math.plex4.io.DoubleArrayReaderWriter;
+import edu.stanford.math.plex4.io.SimplexStreamReaderWriter;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.utility.RandomUtility;
+import edu.stanford.math.primitivelib.autogen.array.DoubleArrayMath;
 
 public class MappingViewerTest {
 	
 	public static void main(String[] args) {
 		RandomUtility.initializeWithSeed(0);
-		testWitnessMapping();
+		testFileMapping();
 	}
 	
 	public static void testMappingViewer() {
 		int domain_size = 4;
-		int codomain_size = 3;
+		int codomain_size = 10;
+		
+		double[][] domainPoints = PointCloudExamples.getEquispacedCirclePoints(domain_size);
+		double[][] codomainPoints = PointCloudExamples.getEquispacedCirclePoints(codomain_size);
+		
+		AbstractFilteredStream<Simplex> domainStream = SimplexStreamExamples.getCircle(domain_size);
+		AbstractFilteredStream<Simplex> codomainStream = SimplexStreamExamples.getCircle(codomain_size);
+		
+		double[][] mapping = new double[codomain_size * 2][domain_size * 2];
+		mapping[0][0] = 1;
+		mapping[1][1] = 1;
+		mapping[2][2] = 1;
+		
+		PlexViewer.drawMapping(domainStream, domainPoints, codomainStream, codomainPoints, mapping);	
+	}
+	
+	public static void testFileMapping() {
+		String domainPointsFile = "D:\\Documents\\Code\\javaplex\\src\\matlab\\hom_complex\\domain_points.txt";
+		String codomainPointsFile = "D:\\Documents\\Code\\javaplex\\src\\matlab\\hom_complex\\codomain_points.txt";
+		String domainStreamFile = "D:\\Documents\\Code\\javaplex\\src\\matlab\\hom_complex\\domain_stream.txt";
+		String codomainStreamFile = "D:\\Documents\\Code\\javaplex\\src\\matlab\\hom_complex\\codomain_stream.txt";
+		String mappingFile = "D:\\Documents\\Code\\javaplex\\src\\matlab\\hom_complex\\mapping.txt";
+		
+		try {
+			double[][] domainPoints = DoubleArrayReaderWriter.getInstance().importFromFile(domainPointsFile);
+			double[][] codomainPoints = DoubleArrayReaderWriter.getInstance().importFromFile(codomainPointsFile);
+			AbstractFilteredStream<Simplex> domainStream = SimplexStreamReaderWriter.getInstance().importFromFile(domainStreamFile);
+			AbstractFilteredStream<Simplex> codomainStream = SimplexStreamReaderWriter.getInstance().importFromFile(codomainStreamFile);
+			double[][] mapping = DoubleArrayReaderWriter.getInstance().importFromFile(mappingFile);
+			
+			for (int i = 0; i < domainPoints.length; i++) {
+				domainPoints[i][0] += 8;
+			}
+			
+			//PlexViewer.drawMapping(domainStream, domainPoints, codomainStream, codomainPoints, mapping);
+			PlexViewer.drawMapping(codomainStream, codomainPoints, domainStream, domainPoints, DoubleArrayMath.transpose(mapping));
+			//PlexViewer.drawSimplexStream(domainStream, domainPoints);
+			//PlexViewer.drawSimplexStream(codomainStream, codomainPoints);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	public static void testFileMapping() {
+		int domain_size = 4;
+		int codomain_size = 10;
+		
+		double[][] domainPoints = PointCloudExamples.getEquispacedCirclePoints(domain_size);
+		double[][] codomainPoints = PointCloudExamples.getEquispacedCirclePoints(codomain_size);
+		
+		for (int i = 0; i < codomainPoints.length; i++) {
+			codomainPoints[i][0] += 3;
+		}
+		
+		
+		AbstractFilteredStream<Simplex> domainStream = SimplexStreamExamples.getCircle(domain_size);
+		AbstractFilteredStream<Simplex> codomainStream = SimplexStreamExamples.getCircle(codomain_size);
+
+		viewFileMap(domainStream, codomainStream, domainPoints, codomainPoints, "D:\\Documents\\Code\\javaplex\\src\\matlab\\hom_complex\\matrix.txt");
+	}
+	
+	public static void viewFileMap(AbstractFilteredStream<Simplex> domainStream, AbstractFilteredStream<Simplex> codomainStream, 
+			double[][] domainPoints, double[][] codomainPoints,	String filename) {
+		
+		double[][] mapping = csvToMatrix(filename);
+		PlexViewer.drawMapping(domainStream, domainPoints, codomainStream, codomainPoints, mapping);
+	}
+	
+	public static void testMappingViewer() {
+		int domain_size = 4;
+		int codomain_size = 10;
 		
 		double[][] domainPoints = PointCloudExamples.getEquispacedCirclePoints(domain_size);
 		double[][] codomainPoints = PointCloudExamples.getEquispacedCirclePoints(codomain_size);
@@ -102,14 +172,14 @@ public class MappingViewerTest {
 		for (int i = 0; i < domainPoints.length; i++) {
 			domainPoints[i][0] -= 0.2;
 		}
-		/*
+		
 		for (int i = 0; i < domainPoints.length; i++) {
 			domainPoints[i][0] += 5;
 		}
 		
 		for (int i = 0; i < codomainPoints.length; i++) {
 			codomainPoints[i][0] -= 0;
-		}*/
+		}
 		
 		LandmarkSelector<double[]> landmark_selector = Plex4.createMaxMinSelector(codomainPoints, numLandmarkPoints);
 		
@@ -132,14 +202,14 @@ public class MappingViewerTest {
 		
 		double[][] domainPoints = PointCloudExamples.getEquispacedCirclePoints(domain_size);
 		double[][] codomainPoints = PointCloudExamples.getRandomTrefoilKnotPoints(codomain_size);
-		/*
+		
 		for (int i = 0; i < codomainPoints.length; i++) {
 			codomainPoints[i][0] += 3;
 		}
 		
 		for (int i = 0; i < domainPoints.length; i++) {
 			domainPoints[i][0] -= 0.2;
-		}*/
+		}
 		
 		for (int i = 0; i < domainPoints.length; i++) {
 			domainPoints[i][0] += 5;
@@ -160,8 +230,8 @@ public class MappingViewerTest {
 	
 	
 	public static void testFileMapping() {
-		int domain_size = 5;
-		int codomain_size = 40;
+		int domain_size = 4;
+		int codomain_size = 10;
 		
 		double[][] domainPoints = PointCloudExamples.getEquispacedCirclePoints(domain_size);
 		double[][] codomainPoints = PointCloudExamples.getEquispacedCirclePoints(codomain_size);
@@ -180,18 +250,27 @@ public class MappingViewerTest {
 	public static void viewFileMap(AbstractFilteredStream<Simplex> domainStream, AbstractFilteredStream<Simplex> codomainStream, 
 			double[][] domainPoints, double[][] codomainPoints,	String filename) {
 		
+		double[][] mapping = csvToMatrix(filename);
+		PlexViewer.drawMapping(domainStream, domainPoints, codomainStream, codomainPoints, mapping);
+	}
+	
+	public static double[][] csvToMatrix(String filename) {
+		double[][] mapping = null;
 		try {
 			List<double[]> rows = FileIOUtility.readNumericCSVFile(filename, ",");
 			int n = rows.size();
-			double[][] mapping = new double[n][];
+			 mapping = new double[n][];
 			for (int i = 0; i < n; i++) {
 				mapping[i] = rows.get(i);
 			}
 			
-			PlexViewer.drawMapping(domainStream, domainPoints, codomainStream, codomainPoints, mapping);
+			return mapping;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		return null;
 	}
+	*/
 }
