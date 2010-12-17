@@ -20,7 +20,7 @@ public class SimplexViewerTest {
 		RandomUtility.initializeWithSeed(0);
 		testLazyWitnessComplex();
 	}
-
+	
 	public static void testVietorisRipsComplex() {
 		int numPoints = 200;
 		int dimension = 3;
