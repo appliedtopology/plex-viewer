@@ -1,0 +1,11 @@
+To run the examples use one of the following:
+
+./run_amd64.sh -complex rips_simplices.txt -points rips_points.txt
+
+./run_x86.sh -complex rips_simplices.txt -points rips_points.txt
+
+The commands to manipulate the image are as follows"
+
+arrow keys		-	rotates the object
+page up/down	-	zoom in/out
+numpad 8/2		-	increase/decrease filtration parameter

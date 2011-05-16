@@ -20,6 +20,7 @@ public class PlexViewer {
 	// create Options object
 	private static Options options = null;
 
+	@SuppressWarnings("static-access")
 	private static Options createOptions() {
 		Options options = new Options();
 

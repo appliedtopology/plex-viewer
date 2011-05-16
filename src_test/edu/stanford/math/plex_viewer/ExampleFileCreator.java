@@ -48,13 +48,11 @@ public class ExampleFileCreator {
 	public static void createWitnessExample() {
 		int numPoints = 200;
 		int numLandmarkPoints = 40;
-		int dimension = 3;
 		int maxDimension = 2;
 		double maxFiltrationValue = 0.5;
 		double[][] points = PointCloudExamples.getRandomTrefoilKnotPoints(numPoints);
 		
 		LandmarkSelector<double[]> landmark_selector = Plex4.createMaxMinSelector(points, numLandmarkPoints);
-		AbstractSearchableMetricSpace<double[]> metricSpace = new EuclideanMetricSpace(points); 
 		LazyWitnessStream<double[]> stream = Plex4.createLazyWitnessStream(landmark_selector, maxDimension, maxFiltrationValue);
 		stream.finalizeStream();
 
