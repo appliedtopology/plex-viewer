@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project plex-viewer">
+
 	<target name="create_run_jar">
 		<jar destfile="examples/plex-viewer.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
@@ -14,4 +15,16 @@
 			<zipfileset excludes="META-INF/*.SF" src="/data/repositories/plex-viewer/lib/commons-cli-1.2.jar" />
 		</jar>
 	</target>
+
+	<target name="create_dist">
+		<tar destfile="dist/plex-viewer-examples.tar.gz" compression="gzip">
+			<tarfileset dir="examples" prefix="plex-viewer/examples" preserveLeadingSlashes="true">
+				<include name="**" />
+			</tarfileset>
+			<tarfileset dir="lib" prefix="plex-viewer/lib" preserveLeadingSlashes="true">
+				<include name="**" />
+			</tarfileset>
+		</tar>
+	</target>
+
 </project>
