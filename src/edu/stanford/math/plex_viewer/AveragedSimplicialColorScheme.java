@@ -1,8 +1,8 @@
 package edu.stanford.math.plex_viewer;
 
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
+import edu.stanford.math.plex4.metric.interfaces.AbstractObjectMetricSpace;
 import edu.stanford.math.primitivelib.autogen.array.FloatArrayMath;
-import edu.stanford.math.primitivelib.metric.interfaces.AbstractObjectMetricSpace;
 
 /**
  * This class computes the color of a geometric realization of a simplex but averaging

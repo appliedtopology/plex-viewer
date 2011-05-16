@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# You may find this shell script helpful.
+
+CPATH="plex-viewer.jar:../lib/ext/gluegen-rt.jar:../lib/ext/jogl.jar"
+LPATH="../lib/ext/amd64/"
+
+java -cp $CPATH \
+  -Djava.library.path=$LPATH \
+  edu.stanford.math.plex_viewer.PlexViewer \
+  $@

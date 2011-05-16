@@ -33,7 +33,7 @@ public class MappingViewerTest {
 		mapping[1][1] = 1;
 		mapping[2][2] = 1;
 		
-		PlexViewer.drawMapping(domainStream, domainPoints, codomainStream, codomainPoints, mapping);	
+		Api.drawMapping(domainStream, domainPoints, codomainStream, codomainPoints, mapping);	
 	}
 	
 	public static void testFileMapping() {
@@ -55,7 +55,7 @@ public class MappingViewerTest {
 			}
 			
 			//PlexViewer.drawMapping(domainStream, domainPoints, codomainStream, codomainPoints, mapping);
-			PlexViewer.drawMapping(codomainStream, codomainPoints, domainStream, domainPoints, DoubleArrayMath.transpose(mapping));
+			Api.drawMapping(codomainStream, codomainPoints, domainStream, domainPoints, DoubleArrayMath.transpose(mapping));
 			//PlexViewer.drawSimplexStream(domainStream, domainPoints);
 			//PlexViewer.drawSimplexStream(codomainStream, codomainPoints);
 		} catch (IOException e) {

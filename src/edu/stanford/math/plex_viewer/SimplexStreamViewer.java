@@ -5,10 +5,10 @@ import java.awt.event.KeyEvent;
 import javax.media.opengl.GL;
 
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
+import edu.stanford.math.plex4.metric.impl.EuclideanMetricSpace;
+import edu.stanford.math.plex4.metric.interfaces.AbstractObjectMetricSpace;
 import edu.stanford.math.plex4.streams.impl.GeometricSimplexStream;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
-import edu.stanford.math.primitivelib.metric.impl.EuclideanMetricSpace;
-import edu.stanford.math.primitivelib.metric.interfaces.AbstractObjectMetricSpace;
 
 /**
  * This class draws geometric realizations of simplicial complexes.

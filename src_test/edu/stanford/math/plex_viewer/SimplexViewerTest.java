@@ -5,20 +5,20 @@ import edu.stanford.math.plex4.api.Plex4;
 import edu.stanford.math.plex4.examples.PointCloudExamples;
 import edu.stanford.math.plex4.examples.SimplexStreamExamples;
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
+import edu.stanford.math.plex4.metric.impl.EuclideanMetricSpace;
+import edu.stanford.math.plex4.metric.interfaces.AbstractSearchableMetricSpace;
 import edu.stanford.math.plex4.metric.landmark.LandmarkSelector;
 import edu.stanford.math.plex4.metric.landmark.MaxMinLandmarkSelector;
 import edu.stanford.math.plex4.streams.impl.LazyWitnessStream;
 import edu.stanford.math.plex4.streams.impl.VietorisRipsStream;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.utility.RandomUtility;
-import edu.stanford.math.primitivelib.metric.impl.EuclideanMetricSpace;
-import edu.stanford.math.primitivelib.metric.interfaces.AbstractSearchableMetricSpace;
 
 public class SimplexViewerTest {
 
 	public static void main(String[] args) {
 		RandomUtility.initializeWithSeed(0);
-		testLazyWitnessComplex();
+		testVietorisRipsComplex();
 	}
 	
 	public static void testVietorisRipsComplex() {
