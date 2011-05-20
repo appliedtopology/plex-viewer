@@ -15,6 +15,8 @@ import edu.stanford.math.plex4.homology.chain_basis.Simplex;
 import edu.stanford.math.plex4.io.DoubleArrayReaderWriter;
 import edu.stanford.math.plex4.io.SimplexStreamReaderWriter;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
+import edu.stanford.math.plex_viewer.gl.OpenGLManager;
+import edu.stanford.math.plex_viewer.rendering.SimplexStreamRenderer;
 
 public class PlexViewer {
 	// create Options object
@@ -64,7 +66,7 @@ public class PlexViewer {
 		AbstractFilteredStream<Simplex> stream = SimplexStreamReaderWriter.getInstance().importFromFile(complexFile);
 		double[][] points = DoubleArrayReaderWriter.getInstance().importFromFile(pointsFile);
 		
-		OpenGLManager openGLManager = new OpenGLManager(new SimplexStreamViewer(stream, points));
+		OpenGLManager openGLManager = new OpenGLManager(new SimplexStreamRenderer(stream, points));
 		openGLManager.initialize();
 	}
 }

@@ -6,7 +6,7 @@
 	<classpathentry kind="lib" path="lib/javaplex.jar"/>
 	<classpathentry kind="lib" path="lib/ext/gluegen-rt.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="plex-viewer/lib/ext"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="plex-viewer/lib/ext/amd64"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/ext/jogl.jar">
