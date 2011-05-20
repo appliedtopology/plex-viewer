@@ -1,4 +1,6 @@
+================
 OpenGL Rendering
+================
 
 To run the examples use one of the following:
 
@@ -14,8 +16,9 @@ numpad 8/2	-	increase/decrease filtration parameter
 space bar	-	capture screen output to file
 
 
-
+=============
 Pov Rendering
+=============
 
 Run the following commands:
 

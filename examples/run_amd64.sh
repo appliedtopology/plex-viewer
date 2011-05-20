@@ -5,5 +5,5 @@ LPATH="../lib/ext/amd64/"
 
 java -cp $CPATH \
   -Djava.library.path=$LPATH \
-  edu.stanford.math.plex_viewer.PlexViewer \
+  edu.stanford.math.plex_viewer.SimplexStreamViewer \
   $@
