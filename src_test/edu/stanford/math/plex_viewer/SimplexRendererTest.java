@@ -1,7 +1,5 @@
 package edu.stanford.math.plex_viewer;
 
-import java.io.IOException;
-
 import edu.stanford.math.plex4.api.FilteredStreamInterface;
 import edu.stanford.math.plex4.api.Plex4;
 import edu.stanford.math.plex4.examples.PointCloudExamples;
@@ -16,7 +14,6 @@ import edu.stanford.math.plex4.streams.impl.VietorisRipsStream;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.utility.RandomUtility;
 import edu.stanford.math.plex_viewer.gl.OpenGLManager;
-import edu.stanford.math.plex_viewer.pov.PovWriter;
 import edu.stanford.math.plex_viewer.rendering.LandmarkStreamRenderer;
 import edu.stanford.math.plex_viewer.rendering.SimplexStreamRenderer;
 
@@ -24,7 +21,7 @@ public class SimplexRendererTest {
 
 	public static void main(String[] args) {
 		RandomUtility.initializeWithSeed(0);
-		testLazyWitnessComplexPov();
+		testVietorisRipsComplex();
 	}
 	
 	public static void testVietorisRipsComplex() {
@@ -58,28 +55,6 @@ public class SimplexRendererTest {
 
 		openGLManager.initialize();
 	}
-	
-	public static void testLazyWitnessComplexPov() {
-		int numPoints = 2000;
-		int numLandmarkPoints = 100;
-		int maxDimension = 2;
-		double maxFiltrationValue = 0.0;
-		double[][] points = PointCloudExamples.getRandomTorusPoints(numPoints, 1, 2);
-		
-		LandmarkSelector<double[]> landmark_selector = Plex4.createMaxMinSelector(points, numLandmarkPoints);
-		
-		LazyWitnessStream<double[]> stream = Plex4.createLazyWitnessStream(landmark_selector, maxDimension, maxFiltrationValue);
-		stream.finalizeStream();
-	
-		PovWriter w = new PovWriter();
-		
-		try {
-			w.writeToFile(stream, landmark_selector.getUnderlyingMetricSpace(), "test.pov");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	public static void testFigure8() {
 		int numPoints = 200;
@@ -93,18 +68,9 @@ public class SimplexRendererTest {
 		AbstractFilteredStream<Simplex> stream = FilteredStreamInterface.createPlex4LazyWitnessStream(selector, maxDimension, maxFiltrationValue, numDivisions);
 		stream.finalizeStream();
 
-		//OpenGLManager openGLManager = new OpenGLManager(new SimplexStreamRenderer(stream, selector));
+		OpenGLManager openGLManager = new OpenGLManager(new SimplexStreamRenderer(stream, selector));
 
-		//openGLManager.initialize();
-		
-		PovWriter w = new PovWriter();
-		
-		try {
-			w.writeToFile(stream, selector.getUnderlyingMetricSpace(), "test.pov");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		openGLManager.initialize();
 	}
 	
 	public static void testIcosahedron() {

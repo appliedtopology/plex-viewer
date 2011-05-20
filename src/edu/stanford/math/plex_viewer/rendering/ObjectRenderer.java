@@ -22,7 +22,6 @@ public interface ObjectRenderer {
 	/**
 	 * This function renders the supplied shape.
 	 * 
-	 * @param object the object to render
 	 * @param gl the OpenGl object
 	 */
 	void renderShape(GL gl);

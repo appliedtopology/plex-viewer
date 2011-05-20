@@ -1,23 +1,125 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project plex-viewer">
+<project name="plex-viewer" default="default" basedir=".">
+	<property name="version.num" value="4.01" />
+	<property name="build.dir" value="build" />
+	<property name="bin.dir" value="${build.dir}/bin" />
+	<property name="temp.dir" value="temp" />
+	<property name="src_test.dir" value="src_test" />
+	<property name="src.dir" value="src" />
+	<property name="lib.dir" value="lib" />
+	<property name="doc.dir" value="doc" />
+	<property name="dist.dir" value="dist" />
+	<property name="examples.dir" value="examples" />
+	<property name="doc.overview" value="doc_includes/overview.htm" />
+	<property name="package.name" value="edu.stanford.math.plex-viewer" />
+	<property name="runnable.jar" value="${dist.dir}/plex-viewer-${version.num}.jar" />
+	<property name="basic.jar" value="${temp.dir}/plex-viewer.jar" />
 
-	<target name="create_run_jar">
-		<jar destfile="examples/plex-viewer.jar" filesetmanifest="mergewithoutmain">
+	<property name="source.tarball" value="${dist.dir}/plex-viewer-src-${version.num}.tar.gz" />
+	<property name="doc.tarball" value="${dist.dir}/plex-viewer-doc-${version.num}.tar.gz" />
+	<property name="examples.tarball" value="${dist.dir}/plex-viewer-examples-${version.num}.tar.gz" />
+	<property name="ant.build.javac.source" value="1.5" />
+	<property name="ant.build.javac.target" value="1.5" />
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/ext">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<property name="debug.flag" value="off" />
+
+	<!--Default target-->
+	<target name="default" depends="clean,dist" />
+
+	<!--All targets-->
+	<target name="all" depends="clean,dist" />
+
+	<!--Clean targets-->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${temp.dir}" />
+		<delete>
+			<fileset dir="." includes="TEST*.txt" />
+		</delete>
+	</target>
+
+	<target name="clean_dist" depends="clean">
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="clean_all" depends="clean,clean_dist" />
+
+	<!--Initialization targets-->
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${temp.dir}" />
+	</target>
+
+	<!--Documentation targets-->
+	<target name="doc" depends="javadoc" />
+
+	<target name="javadoc">
+		<javadoc destdir="${doc.dir}" classpathref="classpath" Overview="${doc.overview}" sourcepath="${src.dir}">
+			<package name="${package.name}" />
+			<fileset dir="${src.dir}" />
+		</javadoc>
+	</target>
+
+	<!--Bin targets-->
+	<target name="classes" depends="init">
+		<javac destdir="${bin.dir}" classpathref="classpath" debug="${debug.flag}" includeAntRuntime="false" source="1.5" target="1.5">
+			<compilerarg value="-Xlint" />
+			<src>
+				<pathelement path="${src.dir}" />
+			</src>
+		</javac>
+	</target>
+
+	<!--Distribution targets-->
+	<target name="dist" depends="clean_dist,runnable_jar,doc_tar,source_dist,example_dist" />
+
+	<target name="doc_tar" depends="javadoc">
+		<tar destfile="${doc.tarball}" compression="gzip">
+			<tarfileset dir="doc" prefix="javadoc">
+				<include name="*.html" />
+				<include name="**/*.html" />
+			</tarfileset>
+		</tar>
+	</target>
+
+	<target name="source_dist">
+		<tar destfile="${source.tarball}" compression="gzip">
+			<tarfileset dir="${src.dir}" prefix="src">
+				<include name="**" />
+				<exclude name="**.svn/**" />
+			</tarfileset>
+		</tar>
+	</target>
+
+	<!--Runnable jar file-->
+	<target name="runnable_jar" depends="classes">
+		<jar destfile="${runnable.jar}" filesetmanifest="mergewithoutmain">
 			<manifest>
-				<attribute name="Main-Class" value="edu.stanford.math.plex_viewer.PlexViewer" />
+				<attribute name="Main-Class" value="edu.stanford.math.plex_viewer.SimplexStreamViewer" />
 				<attribute name="Class-Path" value="." />
 			</manifest>
-			<fileset dir="bin" />
-			<fileset dir="lib" />
-			<zipfileset excludes="META-INF/*.SF" src="/data/repositories/plex-viewer/lib/javaplex.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="/data/repositories/plex-viewer/lib/ext/gluegen-rt.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="/data/repositories/plex-viewer/lib/ext/jogl.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="/data/repositories/plex-viewer/lib/commons-cli-1.2.jar" />
+			<fileset dir="${bin.dir}" />
+			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/javaplex.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/ext/gluegen-rt.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/ext/jogl.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/commons-cli-1.2.jar" />
 		</jar>
 	</target>
 
-	<target name="create_dist">
-		<tar destfile="dist/plex-viewer-examples.tar.gz" compression="gzip">
+	<target name="example_dist" depends="runnable_jar">
+		<copy file="${runnable.jar}" tofile="${examples.dir}/plex-viewer.jar" />
+		<tar destfile="${examples.tarball}" compression="gzip">
 			<tarfileset dir="examples" prefix="plex-viewer/examples" preserveLeadingSlashes="true">
 				<include name="**" />
 			</tarfileset>

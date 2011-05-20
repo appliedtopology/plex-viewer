@@ -5,13 +5,12 @@ import java.util.List;
 
 public class PovScene {
 	class Camera {
-		int[] location = new int[]{0, 0, -6};
+		int[] location = new int[]{0, 0, -4};
 		int[] look_at = new int[]{0, 0, 0};
 
 		@Override
 		public String toString() {
-			return "camera { location " + PovUtility.toString(location)
-					+ " look_at " + PovUtility.toString(look_at) + "}";
+			return "camera { location " + PovUtility.toString(location)	+ " look_at " + PovUtility.toString(look_at) + "}";
 		}
 	}
 	
@@ -32,7 +31,6 @@ public class PovScene {
 			return "background { color " + color + " }";
 		}
 	}
-	
 	
 	List<String> includes = new ArrayList<String>();
 	Camera camera = new Camera();

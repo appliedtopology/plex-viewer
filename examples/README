@@ -1,3 +1,5 @@
+OpenGL Rendering
+
 To run the examples use one of the following:
 
 ./run_amd64.sh -complex rips_simplices.txt -points rips_points.txt
@@ -6,6 +8,18 @@ To run the examples use one of the following:
 
 The commands to manipulate the image are as follows"
 
-arrow keys		-	rotates the object
+arrow keys	-	rotates the object
 page up/down	-	zoom in/out
-numpad 8/2		-	increase/decrease filtration parameter
+numpad 8/2	-	increase/decrease filtration parameter
+space bar	-	capture screen output to file
+
+
+
+Pov Rendering
+
+Run the following commands:
+
+./generate_pov.sh -complex ./rips_simplices.txt -points ./rips_points.txt -destination out.pov
+./render_default.sh out.pov 
+
+This should create a file called out.png

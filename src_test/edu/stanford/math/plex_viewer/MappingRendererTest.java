@@ -11,6 +11,7 @@ import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.utility.RandomUtility;
 import edu.stanford.math.primitivelib.autogen.array.DoubleArrayMath;
 
+@Deprecated
 public class MappingRendererTest {
 	
 	public static void main(String[] args) {

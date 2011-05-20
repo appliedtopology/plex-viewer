@@ -138,11 +138,11 @@ public class OpenGLManager implements GLEventListener, KeyListener, MouseListene
 
 		String tFileName = "capture-" + FileManager.generateUniqueFileName() + ".png";
 
-		BufferedImage tScreenshot = Screenshot.readToBufferedImage(0,0, width, height, false);
+		BufferedImage screenShotBuffer = Screenshot.readToBufferedImage(width, height);
 		File file = new File(tFileName);
 
 		try {
-			ImageIO.write(tScreenshot, "png", file);
+			ImageIO.write(screenShotBuffer, "png", file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

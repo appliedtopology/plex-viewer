@@ -25,22 +25,18 @@ public class ExampleFileCreator {
 		int numPoints = 200;
 		int dimension = 3;
 		int maxDimension = 2;
-		double maxFiltrationValue = 0.8;
+		double maxFiltrationValue = 0.4;
 		double[][] points = PointCloudExamples.getRandomSpherePoints(numPoints, dimension - 1);
 		AbstractSearchableMetricSpace<double[]> metricSpace = new EuclideanMetricSpace(points); 
 		VietorisRipsStream<double[]> stream = new VietorisRipsStream<double[]>(metricSpace, maxFiltrationValue, maxDimension);
 		stream.finalizeStream();
 
 		try {
-			
 			String complexFile = "examples/rips_simplices.txt";
 			String pointsFile = "examples/rips_points.txt";
 			SimplexStreamReaderWriter.getInstance().writeToFile(stream, complexFile);
 			DoubleArrayReaderWriter.getInstance().writeToFile(points, pointsFile);
-			
-			PlexViewer.renderFromFiles(complexFile, pointsFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -50,22 +46,18 @@ public class ExampleFileCreator {
 		int numLandmarkPoints = 40;
 		int maxDimension = 2;
 		double maxFiltrationValue = 0.5;
-		double[][] points = PointCloudExamples.getRandomTrefoilKnotPoints(numPoints);
+		double[][] points = PointCloudExamples.getRandomFigure8Points(numPoints);
 		
 		LandmarkSelector<double[]> landmark_selector = Plex4.createMaxMinSelector(points, numLandmarkPoints);
 		LazyWitnessStream<double[]> stream = Plex4.createLazyWitnessStream(landmark_selector, maxDimension, maxFiltrationValue);
 		stream.finalizeStream();
 
 		try {
-			
 			String complexFile = "examples/witness_simplices.txt";
 			String pointsFile = "examples/witness_points.txt";
 			SimplexStreamReaderWriter.getInstance().writeToFile(stream, complexFile);
 			DoubleArrayReaderWriter.getInstance().writeToFile(points, pointsFile);
-			
-			PlexViewer.renderFromFiles(complexFile, pointsFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

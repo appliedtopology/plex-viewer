@@ -20,7 +20,7 @@ public class GLSettings {
 	private static final int fullScreenWidth = displaymode.getWidth();
 	private static final int fullScreenHeight = displaymode.getHeight();
 	
-	public static boolean useFullScreen = false;
+	public static boolean useFullScreen = true;
 	
 	public static int getScreenWidth() {
 		if (useFullScreen) {
