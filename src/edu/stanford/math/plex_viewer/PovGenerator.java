@@ -16,7 +16,7 @@ import edu.stanford.math.plex4.io.DoubleArrayReaderWriter;
 import edu.stanford.math.plex4.io.FileManager;
 import edu.stanford.math.plex4.io.SimplexStreamReaderWriter;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
-import edu.stanford.math.plex_viewer.pov.PovWriter;
+import edu.stanford.math.plex_viewer.pov.SimplexStreamPovWriter;
 
 /**
  * This class is implements a command-line interface for generating POV files.
@@ -73,7 +73,7 @@ public class PovGenerator {
 		AbstractFilteredStream<Simplex> stream = SimplexStreamReaderWriter.getInstance().importFromFile(complexFile);
 		double[][] points = DoubleArrayReaderWriter.getInstance().importFromFile(pointsFile);
 		
-		PovWriter w = new PovWriter();
+		SimplexStreamPovWriter w = new SimplexStreamPovWriter();
 
 		try {
 			w.writeToFile(stream, points, outputFile);

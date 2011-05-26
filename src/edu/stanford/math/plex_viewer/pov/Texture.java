@@ -8,7 +8,7 @@ public class Texture {
 
 		@Override
 		public String toString() {
-			return "pigment { color rgb" + PovUtility.toString(rgb) + "}";
+			return "pigment { color rgb" + PovUtility.toPovString(rgb) + "}";
 		}
 	}
 
@@ -21,7 +21,6 @@ public class Texture {
 			return "finish { phong " + phong + " phong_size " + phong_size + "}";
 		}
 	}
-
 
 	Pigment pigment = new Pigment();
 	Finish finish = new Finish();

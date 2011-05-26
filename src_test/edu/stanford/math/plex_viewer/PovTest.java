@@ -10,25 +10,26 @@ import edu.stanford.math.plex4.metric.landmark.LandmarkSelector;
 import edu.stanford.math.plex4.streams.impl.LazyWitnessStream;
 import edu.stanford.math.plex4.streams.impl.VietorisRipsStream;
 import edu.stanford.math.plex4.utility.RandomUtility;
-import edu.stanford.math.plex_viewer.pov.PovWriter;
+import edu.stanford.math.plex_viewer.pov.LandmarkSelectorPovWriter;
+import edu.stanford.math.plex_viewer.pov.SimplexStreamPovWriter;
 
 public class PovTest {
 	public static void main(String[] args) {
 		RandomUtility.initializeWithSeed(0);
-		testLazyWitnessComplex();
+		testVietorisRipsComplex();
 	}
 
 	public static void testVietorisRipsComplex() {
-		int numPoints = 100;
+		int numPoints = 600;
 		int dimension = 3;
 		int maxDimension = 2;
-		double maxFiltrationValue = 0.5;
+		double maxFiltrationValue = 0.2;
 		double[][] points = PointCloudExamples.getRandomSpherePoints(numPoints, dimension - 1);
 		AbstractSearchableMetricSpace<double[]> metricSpace = new EuclideanMetricSpace(points); 
 		VietorisRipsStream<double[]> stream = new VietorisRipsStream<double[]>(metricSpace, maxFiltrationValue, maxDimension);
 		stream.finalizeStream();
 
-		PovWriter w = new PovWriter();
+		SimplexStreamPovWriter w = new SimplexStreamPovWriter();
 
 		try {
 			w.writeToFile(stream, metricSpace, "test.pov");
@@ -42,17 +43,17 @@ public class PovTest {
 		int numLandmarkPoints = 100;
 		int maxDimension = 2;
 		double maxFiltrationValue = 0.0;
-		double[][] points = PointCloudExamples.getRandomTorusPoints(numPoints, 1, 2);
+		double[][] points = PointCloudExamples.getRandomTorusPoints(numPoints, 0.5, 1);
 		
 		LandmarkSelector<double[]> landmark_selector = Plex4.createMaxMinSelector(points, numLandmarkPoints);
 		
 		LazyWitnessStream<double[]> stream = Plex4.createLazyWitnessStream(landmark_selector, maxDimension, maxFiltrationValue);
 		stream.finalizeStream();
 	
-		PovWriter w = new PovWriter();
+		LandmarkSelectorPovWriter w = new LandmarkSelectorPovWriter();
 		
 		try {
-			w.writeToFile(stream, landmark_selector.getUnderlyingMetricSpace(), "test.pov");
+			w.writeToFile(landmark_selector , "test.pov");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

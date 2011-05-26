@@ -10,16 +10,16 @@ public class PovScene {
 
 		@Override
 		public String toString() {
-			return "camera { location " + PovUtility.toString(location)	+ " look_at " + PovUtility.toString(look_at) + "}";
+			return "camera { location " + PovUtility.toPovString(location)	+ " look_at " + PovUtility.toPovString(look_at) + "}";
 		}
 	}
 	
 	class LightSource {
-		int[] location = new int[]{0, 0, -10};
+		int[] location = new int[]{1, 1, -10};
 		String color = "White";
 		@Override
 		public String toString() {
-			return "light_source {" + PovUtility.toString(location) + " color " + color + " }";
+			return "light_source {" + PovUtility.toPovString(location) + " color " + color + " }";
 		}
 	}
 	
@@ -28,7 +28,7 @@ public class PovScene {
 
 		@Override
 		public String toString() {
-			return "background { color " + color + " }";
+			return "background { color rgb" + PovUtility.toPovString(PovUtility.defaultBackgroundColor) + " }";
 		}
 	}
 	

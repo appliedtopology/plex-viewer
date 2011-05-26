@@ -22,10 +22,10 @@ public class ExampleFileCreator {
 	}
 	
 	public static void createRipsExample() {
-		int numPoints = 200;
+		int numPoints = 600;
 		int dimension = 3;
 		int maxDimension = 2;
-		double maxFiltrationValue = 0.4;
+		double maxFiltrationValue = 0.2;
 		double[][] points = PointCloudExamples.getRandomSpherePoints(numPoints, dimension - 1);
 		AbstractSearchableMetricSpace<double[]> metricSpace = new EuclideanMetricSpace(points); 
 		VietorisRipsStream<double[]> stream = new VietorisRipsStream<double[]>(metricSpace, maxFiltrationValue, maxDimension);
@@ -45,7 +45,7 @@ public class ExampleFileCreator {
 		int numPoints = 200;
 		int numLandmarkPoints = 40;
 		int maxDimension = 2;
-		double maxFiltrationValue = 0.5;
+		double maxFiltrationValue = 0.2;
 		double[][] points = PointCloudExamples.getRandomFigure8Points(numPoints);
 		
 		LandmarkSelector<double[]> landmark_selector = Plex4.createMaxMinSelector(points, numLandmarkPoints);
