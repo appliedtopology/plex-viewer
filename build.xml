@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project name="plex-viewer" default="default" basedir=".">
-	<property name="version.num" value="1.02" />
+	<property name="version.num" value="1.0.0" />
 	<property name="build.dir" value="build" />
 	<property name="bin.dir" value="${build.dir}/bin" />
 	<property name="temp.dir" value="temp" />
