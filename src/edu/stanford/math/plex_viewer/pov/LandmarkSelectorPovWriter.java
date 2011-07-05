@@ -7,7 +7,7 @@ import java.io.IOException;
 import edu.stanford.math.plex4.io.ObjectWriter;
 import edu.stanford.math.plex4.metric.landmark.LandmarkSelector;
 import edu.stanford.math.plex_viewer.color.ColorScheme;
-import edu.stanford.math.plex_viewer.color.EqualIntensityColorScheme;
+import edu.stanford.math.plex_viewer.color.HSBColorScheme;
 import gnu.trove.TIntHashSet;
 
 public class LandmarkSelectorPovWriter implements ObjectWriter<LandmarkSelector<double[]>> {
@@ -21,7 +21,7 @@ public class LandmarkSelectorPovWriter implements ObjectWriter<LandmarkSelector<
 
 	@Override
 	public void writeToFile(LandmarkSelector<double[]> selector, String path) throws IOException {
-		this.colorScheme = new EqualIntensityColorScheme();
+		this.colorScheme = new HSBColorScheme();
 		
 		double[][] points = selector.getUnderlyingMetricSpace().getPoints();
 

@@ -48,31 +48,30 @@ public class PovGenerator {
 		CommandLineParser parser = new GnuParser();
 		try {
 			CommandLine line = parser.parse(options, args);
-			
+
 			String complexFile = line.getOptionValue("complex");
 			String pointsFile = line.getOptionValue("points");
-			
+
 			String outputFile = null;
 			if (line.hasOption("destination")) {
 				outputFile = line.getOptionValue("destination");
 			} else {
 				outputFile = FileManager.generateUniqueFileName() + ".pov";
 			}
-			
+
 			renderFromFiles(complexFile, pointsFile, outputFile);
-		}
-		catch( ParseException exp ) {
+		} catch (ParseException exp) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("plex-viewer", options);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void renderFromFiles(String complexFile, String pointsFile, String outputFile) throws IOException {
 		AbstractFilteredStream<Simplex> stream = SimplexStreamReaderWriter.getInstance().importFromFile(complexFile);
 		double[][] points = DoubleArrayReaderWriter.getInstance().importFromFile(pointsFile);
-		
+
 		SimplexStreamPovWriter w = new SimplexStreamPovWriter();
 
 		try {

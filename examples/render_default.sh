@@ -1,8 +1,8 @@
 #!/bin/sh
 
 pov_file=$1;
-width="800";
-height="600";
+width="1200";
+height="900";
 quality="3";
 
 echo "Rendering $pov_file ...";

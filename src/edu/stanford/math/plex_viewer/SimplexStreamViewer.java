@@ -45,8 +45,7 @@ public class SimplexStreamViewer {
 			String pointsFile = line.getOptionValue("points");
 			
 			renderFromFiles(complexFile, pointsFile);
-		}
-		catch( ParseException exp ) {
+		} catch (ParseException exp) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp("plex-viewer", options);
 		} catch (IOException e) {
