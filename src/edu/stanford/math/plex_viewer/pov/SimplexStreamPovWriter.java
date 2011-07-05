@@ -12,7 +12,7 @@ import edu.stanford.math.plex4.streams.impl.GeometricSimplexStream;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex_viewer.color.AveragedSimplicialColorScheme;
 import edu.stanford.math.plex_viewer.color.ColorScheme;
-import edu.stanford.math.plex_viewer.color.EqualIntensityColorScheme;
+import edu.stanford.math.plex_viewer.color.HSBColorScheme;
 
 /**
  * This class generates a POV file which can be read by povray to produce a ray-traced image
@@ -40,7 +40,7 @@ public class SimplexStreamPovWriter implements ObjectWriter<GeometricSimplexStre
 	
 	@Override
 	public void writeToFile(GeometricSimplexStream stream, String path) throws IOException {
-		this.colorScheme = new AveragedSimplicialColorScheme<double[]>(stream, new EqualIntensityColorScheme());
+		this.colorScheme = new AveragedSimplicialColorScheme<double[]>(stream, new HSBColorScheme());
 		
 		double[][] points = stream.getPoints();
 

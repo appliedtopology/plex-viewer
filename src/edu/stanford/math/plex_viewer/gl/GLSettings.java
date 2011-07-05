@@ -8,7 +8,7 @@ public class GLSettings {
 
 	public static final float defaultPointSize = 5.0f;
 	public static final float[] defaultPointColor = new float[]{0.1f, 0.1f, 0.1f};
-	public static final float defaultBackgroundIntensity = 0.6f;
+	public static final float defaultBackgroundIntensity = 1.0f;
 	
 	private static final int defaultScreenWidth = 680;
 	private static final int defaultScreenHeight = 680;
