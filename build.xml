@@ -110,7 +110,7 @@
 				<attribute name="Class-Path" value="." />
 			</manifest>
 			<fileset dir="${bin.dir}" />
-			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/javaplex.jar" />
+			<!--<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/javaplex.jar" />-->
 			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/ext/gluegen-rt.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/ext/jogl.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/commons-cli-1.2.jar" />
