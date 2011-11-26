@@ -14,10 +14,12 @@ import gnu.trove.TObjectDoubleIterator;
  * @param <T> the domain type
  * @param <U> the codomain type
  */
-public class PullbackColorScheme<T, U> implements ColorScheme<T> {
+public class PullbackColorScheme<T, U> extends ColorScheme<T> {
 	private final ColorScheme<U> codomainColorScheme;
 	private final DoubleSparseFormalSum<ObjectObjectPair<T, U>> mapping;
 
+	
+	
 	public PullbackColorScheme(ColorScheme<U> codomainColorScheme, DoubleSparseFormalSum<ObjectObjectPair<T, U>> mapping) {
 		this.codomainColorScheme = codomainColorScheme;
 		this.mapping = mapping;

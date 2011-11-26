@@ -14,7 +14,7 @@ import gnu.trove.TObjectDoubleIterator;
  * @param <T> the domain type
  * @param <U> the codomain type
  */
-public class PushforwardColorScheme<T, U> implements ColorScheme<U> {
+public class PushforwardColorScheme<T, U> extends ColorScheme<U> {
 	private final ColorScheme<T> domainColorScheme;
 	private final DoubleSparseFormalSum<ObjectObjectPair<T, U>> mapping;
 

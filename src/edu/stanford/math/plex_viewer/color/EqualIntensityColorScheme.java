@@ -10,8 +10,14 @@ import edu.stanford.math.primitivelib.autogen.array.DoubleArrayMath;
  * @author Andrew Tausz
  *
  */
-public class EqualIntensityColorScheme implements ColorScheme<double[]> {
+public class EqualIntensityColorScheme extends ColorScheme<double[]> {
 	private float saturation = 1;
+	
+	private static EqualIntensityColorScheme instance = new EqualIntensityColorScheme();
+	
+	public static EqualIntensityColorScheme getInstance() {
+		return instance;
+	}
 	
 	public float[] computeColor(double[] point) {
 		// if we get the origin, then simply return black

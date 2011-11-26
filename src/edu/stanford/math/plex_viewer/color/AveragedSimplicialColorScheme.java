@@ -13,10 +13,10 @@ import edu.stanford.math.primitivelib.autogen.array.FloatArrayMath;
  *
  * @param <T> the type of the underlying metric space (e.g. double[])
  */
-public class AveragedSimplicialColorScheme<T> implements ColorScheme<Simplex> {
+public class AveragedSimplicialColorScheme<T> extends ColorScheme<Simplex> {
 	private final AbstractObjectMetricSpace<T> metricSpace;
 	private final ColorScheme<T>  geometricColorScheme;
-	
+
 	public AveragedSimplicialColorScheme(AbstractObjectMetricSpace<T> metricSpace, ColorScheme<T>  geometricColorScheme) {
 		this.metricSpace = metricSpace;
 		this.geometricColorScheme = geometricColorScheme;

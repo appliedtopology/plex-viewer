@@ -25,11 +25,31 @@ public class SimplexStreamPovWriter implements ObjectWriter<GeometricSimplexStre
 	protected ColorScheme<Simplex> colorScheme = null;
 	protected PovScene povScene = new PovScene();
 	
+	
+	
+	
 	@Override
 	public String getExtension() {
 		return "png";
 	}
 
+	public void setColorScheme(ColorScheme<Simplex> colorScheme) {
+		this.colorScheme = colorScheme;
+	}
+	
+	public ColorScheme<Simplex> getColorScheme() {
+		return this.colorScheme;
+	}
+	
+	public void writeToFile(AbstractFilteredStream<Simplex> stream, double[][] points, String path, ColorScheme<Simplex> colorScheme) throws IOException {
+		writeToFile(stream, new EuclideanMetricSpace(points), path, colorScheme);
+	}
+	
+	public void writeToFile(AbstractFilteredStream<Simplex> stream, AbstractObjectMetricSpace<double[]> metricSpace, String path, ColorScheme<Simplex> colorScheme) throws IOException {
+		writeToFile(new GeometricSimplexStream(stream, metricSpace), path, colorScheme);
+	}
+	
+	
 	public void writeToFile(AbstractFilteredStream<Simplex> stream, double[][] points, String path) throws IOException {
 		writeToFile(stream, new EuclideanMetricSpace(points), path);
 	}
@@ -41,7 +61,10 @@ public class SimplexStreamPovWriter implements ObjectWriter<GeometricSimplexStre
 	@Override
 	public void writeToFile(GeometricSimplexStream stream, String path) throws IOException {
 		this.colorScheme = new AveragedSimplicialColorScheme<double[]>(stream, new HSBColorScheme());
-		
+		writeToFile(stream, path, this.colorScheme);
+	}
+	
+	public void writeToFile(GeometricSimplexStream stream, String path, ColorScheme<Simplex> colorScheme) throws IOException {	
 		double[][] points = stream.getPoints();
 
 		BufferedWriter writer = null;
@@ -57,7 +80,7 @@ public class SimplexStreamPovWriter implements ObjectWriter<GeometricSimplexStre
 			
 			
 			for (Simplex simplex: stream) {
-				PovUtility.writeSimplex(writer, simplex, points, this.colorScheme);
+				PovUtility.writeSimplex(writer, simplex, points, colorScheme);
 				writer.newLine();
 			}
 

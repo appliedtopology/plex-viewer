@@ -9,8 +9,15 @@ import java.awt.Color;
  * @author Andrew Tausz
  *
  */
-public class HSBColorScheme implements ColorScheme<double[]> {
+public class HSBColorScheme extends ColorScheme<double[]> {
 	public HSBColorScheme() {}
+	
+	private static HSBColorScheme instance = new HSBColorScheme();
+	
+	public static HSBColorScheme getInstance() {
+		return instance;
+	}
+	
 	
 	public float[] computeColor(double[] point) {
 

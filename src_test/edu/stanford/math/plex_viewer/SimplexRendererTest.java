@@ -21,7 +21,7 @@ public class SimplexRendererTest {
 
 	public static void main(String[] args) {
 		RandomUtility.initializeWithSeed(0);
-		testVietorisRipsComplex();
+		testLazyWitnessComplex();
 	}
 	
 	public static void testVietorisRipsComplex() {
