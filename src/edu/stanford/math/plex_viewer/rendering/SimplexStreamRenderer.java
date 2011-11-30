@@ -24,6 +24,7 @@ import edu.stanford.math.plex_viewer.gl.GLUtility;
 public class SimplexStreamRenderer implements ObjectRenderer {
 	protected final GeometricSimplexStream stream;
 	protected final int maxFiltrationIndex;
+	protected final int minFiltrationIndex;
 	
 	protected int currentFiltrationIndex = 0;
 	protected ColorScheme<Simplex> colorScheme;
@@ -39,6 +40,7 @@ public class SimplexStreamRenderer implements ObjectRenderer {
 	public SimplexStreamRenderer(GeometricSimplexStream geometricSimplexStream) {
 		this.stream = geometricSimplexStream;
 		this.maxFiltrationIndex = this.stream.getMaximumFiltrationIndex();
+		this.minFiltrationIndex = this.stream.getMinimumFiltrationIndex();
 		this.colorScheme = new AveragedSimplicialColorScheme<double[]>(this.stream, new HSBColorScheme());
 	}
 	
@@ -118,7 +120,7 @@ public class SimplexStreamRenderer implements ObjectRenderer {
 			this.currentFiltrationIndex = Math.min(this.currentFiltrationIndex, this.maxFiltrationIndex);
 		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
 			this.currentFiltrationIndex -= 1;
-			this.currentFiltrationIndex = Math.max(0, this.currentFiltrationIndex);
+			this.currentFiltrationIndex = Math.max(this.minFiltrationIndex, this.currentFiltrationIndex);
 		}
 	}
 }
