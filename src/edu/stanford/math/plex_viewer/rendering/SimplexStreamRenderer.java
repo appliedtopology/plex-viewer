@@ -115,10 +115,10 @@ public class SimplexStreamRenderer implements ObjectRenderer {
 	}
 
 	public void processSpecializedKeys(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
+		if (e.getKeyCode() == KeyEvent.VK_NUMPAD8 || e.getKeyCode() == KeyEvent.VK_8) {
 			this.currentFiltrationIndex += 1;
 			this.currentFiltrationIndex = Math.min(this.currentFiltrationIndex, this.maxFiltrationIndex);
-		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD2 || e.getKeyCode() == KeyEvent.VK_2) {
 			this.currentFiltrationIndex -= 1;
 			this.currentFiltrationIndex = Math.max(this.minFiltrationIndex, this.currentFiltrationIndex);
 		}
