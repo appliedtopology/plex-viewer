@@ -28,7 +28,7 @@ public class SimplexStreamRenderer implements ObjectRenderer {
 	
 	protected int currentFiltrationIndex = 0;
 	protected ColorScheme<Simplex> colorScheme;
-	protected int maxNumSimplices = 5000;
+	protected int maxNumSimplices = 50000;
 	protected int maxDimension = 10;
 	
 	/**
@@ -42,6 +42,7 @@ public class SimplexStreamRenderer implements ObjectRenderer {
 		this.maxFiltrationIndex = this.stream.getMaximumFiltrationIndex();
 		this.minFiltrationIndex = this.stream.getMinimumFiltrationIndex();
 		this.colorScheme = new AveragedSimplicialColorScheme<double[]>(this.stream, new HSBColorScheme());
+		this.currentFiltrationIndex = this.minFiltrationIndex;
 	}
 	
 	/**
