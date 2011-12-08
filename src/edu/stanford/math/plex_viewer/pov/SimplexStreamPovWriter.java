@@ -24,10 +24,7 @@ import edu.stanford.math.plex_viewer.color.HSBColorScheme;
 public class SimplexStreamPovWriter implements ObjectWriter<GeometricSimplexStream> {
 	protected ColorScheme<Simplex> colorScheme = null;
 	protected PovScene povScene = new PovScene();
-	
-	
-	
-	
+
 	@Override
 	public String getExtension() {
 		return "png";
