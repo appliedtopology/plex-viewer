@@ -28,7 +28,7 @@ public class SimplexStreamRenderer implements ObjectRenderer {
 	
 	protected int currentFiltrationIndex = 0;
 	protected ColorScheme<Simplex> colorScheme;
-	protected int maxNumSimplices = 50000;
+	protected int maxNumSimplices = 500000;
 	protected int maxDimension = 10;
 	
 	/**

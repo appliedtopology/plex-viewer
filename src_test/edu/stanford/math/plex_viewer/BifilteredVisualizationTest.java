@@ -4,15 +4,15 @@ import edu.stanford.math.plex4.api.Plex4;
 import edu.stanford.math.plex4.examples.PointCloudExamples;
 import edu.stanford.math.plex4.homology.chain_basis.Simplex;
 import edu.stanford.math.plex4.metric.impl.EuclideanMetricSpace;
+import edu.stanford.math.plex4.streams.filter.FilterFunction;
+import edu.stanford.math.plex4.streams.filter.IntFilterFunction;
+import edu.stanford.math.plex4.streams.filter.KernelDensityFilterFunction;
+import edu.stanford.math.plex4.streams.filter.MaxSimplicialFilterFunction;
 import edu.stanford.math.plex4.streams.impl.VietorisRipsStream;
 import edu.stanford.math.plex4.streams.interfaces.AbstractFilteredStream;
 import edu.stanford.math.plex4.streams.multi.AbstractMultifilteredStream;
 import edu.stanford.math.plex4.streams.multi.BifilteredMetricStream;
-import edu.stanford.math.plex4.streams.multi.FilterFunction;
 import edu.stanford.math.plex4.streams.multi.IncreasingOrthantFlattener;
-import edu.stanford.math.plex4.streams.multi.InducedSimplicialFilterFunction;
-import edu.stanford.math.plex4.streams.multi.IntFilterFunction;
-import edu.stanford.math.plex4.streams.multi.KernelDensityFilterFunction;
 import edu.stanford.math.plex4.utility.RandomUtility;
 import edu.stanford.math.plex_viewer.gl.OpenGLManager;
 import edu.stanford.math.plex_viewer.rendering.SimplexStreamRenderer;
@@ -45,7 +45,7 @@ public class BifilteredVisualizationTest {
 		// initialize the kernel density function
 		IntFilterFunction intFilterFunction = new KernelDensityFilterFunction(
 				metricSpace, sigma);
-		FilterFunction<Simplex> simplexFilterFunction = new InducedSimplicialFilterFunction(
+		FilterFunction<Simplex> simplexFilterFunction = new MaxSimplicialFilterFunction(
 				intFilterFunction);
 
 		// create the bifiltered stream
